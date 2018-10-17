@@ -2,17 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // Components
-//import { InicioComponent } from './components/inicio/inicio.component';
+import { LoginComponent } from '../layout/components/login/login.component';
 
 
 const routes: Routes = [
-  //{ path: 'inicio', component: InicioComponent },
-  { path: '**', redirectTo: 'inicio' }
+  { path: 'login', component: LoginComponent },
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forRoot(routes)
   ],
   declarations: [],
   exports: [RouterModule]

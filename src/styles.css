@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./css/bootstrap.min.css";
+/*@import "./css/beyond-rtl.min.css";
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+            <link href="~/assets/css/font-awesome.min.css" rel="stylesheet" />
+            <link href="~/assets/css/beyond.min.css" rel="stylesheet" />
+            <link href="~/assets/css/demo.min.css" rel="stylesheet" />
+            <link href="~/assets/css/animate.min.css" rel="stylesheet" />
+            <script src="~/assets/js/skins.min.js"></script>
+*/

@@ -1,0 +1,32 @@
+<div class="login-container animated fadeInDown">
+  <div class="loginbox bg-white">
+      <div class="loginbox-title">Iniciar Sesión</div>
+      <div class="loginbox-social">
+          <div class="social-title ">Conéctate con tus Credenciales</div>
+          <div class="float-left">
+              <p>
+                  <img src="./assets/images/logoInicio.png" />
+              </p>
+          </div>
+      </div>
+      <div class="loginbox-textbox">
+          <input type="text" class="form-control" placeholder="Usuario" id="usuario" name="usuario" />
+      </div>
+      <div class="loginbox-textbox">
+          <input type="password" class="form-control" placeholder="Contraseña" id="contrasena" name="contrasena" />
+      </div>
+      <div class="loginbox-forgot">
+          <a></a>
+      </div>
+      
+      <div class="loginbox-submit"> 
+          <div>
+              <input type="submit" class="btn btn-primary btn-block" value="Ingresar">
+          </div>
+          <br>
+          <div>
+              <p class="text-danger"><strong>@Session["MensajeBienvenida"]</strong></p>
+           </div>
+      </div>
+  </div>
+</div>
