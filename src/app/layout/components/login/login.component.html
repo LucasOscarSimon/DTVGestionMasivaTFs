@@ -12,18 +12,17 @@
                 </div>
             </div>
             <div class="loginbox-textbox">
-                <input type="text" class="form-control" placeholder="Usuario" id="usuario" name="usuario" />
+                <input type="text" class="form-control" placeholder="Usuario" 
+                    [(ngModel)]="oUsuario.strUsuario"/>
             </div>
             <div class="loginbox-textbox">
-                <input type="password" class="form-control" placeholder="Contraseña" id="contrasena" name="contrasena" />
+                <input type="password" class="form-control" placeholder="Contraseña" 
+                    id="contrasena" name="contrasena" [(ngModel)]="oUsuario.strPassword"/>
             </div>
-            <div class="loginbox-forgot">
-                <a></a>
-            </div>
-            
             <div class="loginbox-submit"> 
                 <div>
-                    <input type="submit" class="btn btn-primary btn-block" value="Ingresar">
+                    <input type="submit" class="btn btn-primary btn-block" 
+                        value="Ingresar" (click)="onClickIngresar()">
                 </div>
                 <br>
                 <div>

@@ -2,6 +2,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+//********** FORMS MODULE */
+import { FormsModule } from '@angular/forms';
+
 //********** Routing Pages ********/
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
@@ -34,6 +37,8 @@ import { ConsultaAuditoriaComponent } from './layout/components/consulta-auditor
   imports: [
     //******* Hace posible la exportacion de los componentes */
     BrowserModule,
+    //******* Hace posible el enlace entre las propiedades y los inputs */
+    FormsModule,
     //******* Aqui poner los Componentes Importados de ng-bootstrap */
     NgbPaginationModule, 
     NgbAlertModule,
