@@ -1,0 +1,62 @@
+.login-container{
+    position:relative;
+    margin:10% auto;
+    max-width:300px;
+}
+
+.login-container .loginbox{
+    position:relative;
+    width:300px !important;
+    height:auto !important;
+    padding:0 0 20px 0;
+    -webkit-box-shadow:0 0 14px rgba(0,0,0,.1);
+    -moz-box-shadow:0 0 14px rgba(0,0,0,.1);
+    box-shadow:0 0 14px rgba(0,0,0,.1)
+}
+
+.loginbox-title{
+    position:relative;
+    text-align:center;
+    width:100%;
+    height:35px;
+    padding-top:10px;
+    font-family:'Lucida Sans','trebuchet MS',Arial,Helvetica;
+    font-size:20px;
+    font-weight:normal;
+    color:#444
+}
+
+.loginbox-social{
+    padding:0 10px 10px;
+    text-align:center
+}
+
+.social-title{
+    font-size:14px;
+    font-weight:500;
+    color:#a9a9a9;
+    margin-top:10px
+}
+
+.loginbox-textbox{
+    padding:10px 40px
+}
+
+.loginbox-textbox .form-control{
+    -webkit-border-radius:3px !important;
+    -webkit-background-clip:padding-box !important;
+    -moz-border-radius:3px !important;
+    -moz-background-clip:padding !important;
+    border-radius:3px !important;
+    background-clip:padding-box !important;
+    background-color: #FAFAFA;
+}
+
+.loginbox-submit{
+    padding:10px 40px
+}
+
+.loginbox-submit input[type="submit"]{
+    background-color: #0072C6 !important;
+    border-color: #0072C6 !important;
+}

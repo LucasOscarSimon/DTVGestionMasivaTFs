@@ -8,3 +8,6 @@
             <link href="~/assets/css/animate.min.css" rel="stylesheet" />
             <script src="~/assets/js/skins.min.js"></script>
 */
+body{
+    background-color: #EEEEEE;
+}
