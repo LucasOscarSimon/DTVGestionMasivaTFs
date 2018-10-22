@@ -7,9 +7,9 @@ import { Usuario } from '../../models/login/usuario';
 })
 export class LoginService implements LoginInterface{
   
-  autenticar(oUsuario: Usuario): boolean {
+  logIn(oUsuario: Usuario): boolean {
     throw new Error("Method not implemented.");
   }
-  
+
   constructor() { }
 }

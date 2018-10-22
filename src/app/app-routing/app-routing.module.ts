@@ -8,7 +8,8 @@ import { AjusteMasivoComponent } from '../layout/components/ajuste-masivo/ajuste
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'ajuste-masivo', component: AjusteMasivoComponent }
+  { path: 'ajuste-masivo', component: AjusteMasivoComponent },
+  { path: '**', redirectTo: 'login'}
 ];
 
 @NgModule({

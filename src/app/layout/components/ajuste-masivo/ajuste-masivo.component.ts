@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 //Called components
-import { ImportacionComponent } from 'src/app/shared/components/importacion/importacion.component'
-import { ConsultaComponent } from 'src/app/shared/components/consulta/consulta.component'
-import { ResumenPreliminarComponent } from 'src/app/shared/components/resumen-preliminar/resumen-preliminar.component'
-import { ResumenProcesamientoComponent } from 'src/app/shared/components/resumen-procesamiento/resumen-procesamiento.component'
+import { ImportacionComponent } from '../shared/importacion/importacion.component'
+import { ConsultaComponent } from '../shared/consulta/consulta.component'
+import { ResumenPreliminarComponent } from '../shared/resumen-preliminar/resumen-preliminar.component'
+import { ResumenProcesamientoComponent } from '../shared/resumen-procesamiento/resumen-procesamiento.component'
 
  var consultaOn:boolean = false;
  var resumenPreliminarOn:boolean = false;
