@@ -3,11 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { LoginComponent } from '../layout/components/login/login.component';
+import { AjusteMasivoComponent } from '../layout/components/ajuste-masivo/ajuste-masivo.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: 'login' }
+  { path: 'ajuste-masivo', component: AjusteMasivoComponent }
 ];
 
 @NgModule({
