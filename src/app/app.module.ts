@@ -21,7 +21,10 @@ import { AjusteMasivoComponent } from './layout/components/ajuste-masivo/ajuste-
 import { PagoMasivoComponent } from './layout/components/pago-masivo/pago-masivo.component';
 import { BorradoFtsMasivoComponent } from './layout/components/borrado-fts-masivo/borrado-fts-masivo.component';
 import { ConsultaAuditoriaComponent } from './layout/components/consulta-auditoria/consulta-auditoria.component';
-import { AlertPagoMasivoComponent } from './alert-pago-masivo/alert-pago-masivo.component';
+import { ImportacionComponent } from './shared/components/importacion/importacion.component';
+import { ConsultaComponent } from './shared/components/consulta/consulta.component';
+import { ResumenPreliminarComponent } from './shared/components/resumen-preliminar/resumen-preliminar.component';
+import { ResumenProcesamientoComponent } from './shared/components/resumen-procesamiento/resumen-procesamiento.component';
 
 
 @NgModule({
@@ -34,7 +37,10 @@ import { AlertPagoMasivoComponent } from './alert-pago-masivo/alert-pago-masivo.
     ConsultaAuditoriaComponent,
     HeaderComponent,
     FooterComponent,
-    AlertPagoMasivoComponent
+    ImportacionComponent,
+    ConsultaComponent,
+    ResumenPreliminarComponent,
+    ResumenProcesamientoComponent
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */

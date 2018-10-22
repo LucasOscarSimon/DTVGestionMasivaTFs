@@ -3,3 +3,8 @@
 body{
     background-color: #EEEEEE;
 }
+
+.btn-dtv{
+    background-color: #0072C6 !important;
+    border-color: #0072C6 !important;
+}
