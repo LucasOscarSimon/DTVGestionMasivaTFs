@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/login/usuario';
 import { Router } from '@angular/router';
+import { GlobalEventsManager } from '../../services/global-events-manager';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,8 @@ export class LoginComponent implements OnInit {
   MensajeBienvenida:string="";
   oUsuario: Usuario;
   constructor(
-    private oRouter: Router
+    private ORouter: Router,
+    private OGlobalEventsManager: GlobalEventsManager
   ) { }
 
   ngOnInit() {
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
   onClickIngresar(){
     console.log("ingresar");
     console.log(this.oUsuario);
-    this.oRouter.navigate(['/ajuste-masivo']);
+    this.OGlobalEventsManager.showHeader.emit(true);
+    this.ORouter.navigate(['/ajuste-masivo']);
   }
 }

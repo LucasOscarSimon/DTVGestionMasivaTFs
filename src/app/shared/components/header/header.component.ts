@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {GlobalEventsManager} from '../../../layout/services/global-events-manager';
 
 @Component({
   selector: 'app-header',
@@ -6,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  showHeader: boolean = false;
+  public showHeader: boolean = false;
 
-  constructor() { }
+  constructor(
+    private OGlobalEventsManager:GlobalEventsManager
+  ) { 
+    this.OGlobalEventsManager.showHeader.subscribe((mode: any) => {
+      console.log(mode);
+      this.showHeader = mode;
+    });
+  }
 
   ngOnInit() {
   }
