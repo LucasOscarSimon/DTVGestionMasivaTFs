@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+//import {NgbDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import { NgbdDatepickerPopup } from '../datepicker-popup/datepicker-popup.component';
 
 @Component({
   selector: 'app-consulta',

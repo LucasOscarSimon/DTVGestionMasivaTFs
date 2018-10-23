@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
 //********** Módulos externos ******/
-import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDatepickerModule,NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 
 //********** Components ********/
 import { AppComponent } from './app.component';
@@ -21,10 +21,12 @@ import { AjusteMasivoComponent } from './layout/components/ajuste-masivo/ajuste-
 import { PagoMasivoComponent } from './layout/components/pago-masivo/pago-masivo.component';
 import { BorradoFtsMasivoComponent } from './layout/components/borrado-fts-masivo/borrado-fts-masivo.component';
 import { ConsultaAuditoriaComponent } from './layout/components/consulta-auditoria/consulta-auditoria.component';
-import { ImportacionComponent } from './shared/components/importacion/importacion.component';
-import { ConsultaComponent } from './shared/components/consulta/consulta.component';
-import { ResumenPreliminarComponent } from './shared/components/resumen-preliminar/resumen-preliminar.component';
-import { ResumenProcesamientoComponent } from './shared/components/resumen-procesamiento/resumen-procesamiento.component';
+import { ImportacionComponent } from './layout/components/shared/importacion/importacion.component';
+import { ConsultaComponent } from './layout/components/shared/consulta/consulta.component';
+import { ResumenPreliminarComponent } from './layout/components/shared/resumen-preliminar/resumen-preliminar.component';
+import { ResumenProcesamientoComponent } from './layout/components/shared/resumen-procesamiento/resumen-procesamiento.component';
+import { NgbdDatepickerPopup } from './layout/components/shared/datepicker-popup/datepicker-popup.component';
+
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import { ResumenProcesamientoComponent } from './shared/components/resumen-proce
     ImportacionComponent,
     ConsultaComponent,
     ResumenPreliminarComponent,
-    ResumenProcesamientoComponent
+    ResumenProcesamientoComponent,
+    NgbdDatepickerPopup
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */
@@ -50,6 +53,7 @@ import { ResumenProcesamientoComponent } from './shared/components/resumen-proce
     //******* Aqui poner los Componentes Importados de ng-bootstrap */
     NgbPaginationModule, 
     NgbAlertModule,
+    NgbDatepickerModule,
     //******* Aqui poner el modulo de Ruteo principal */
     AppRoutingModule
   ],
