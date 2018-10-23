@@ -5,11 +5,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../layout/components/login/login.component';
 import { AjusteMasivoComponent } from '../layout/components/ajuste-masivo/ajuste-masivo.component';
 import { ConsultaAuditoriaComponent } from '../layout/components/consulta-auditoria/consulta-auditoria.component';
+import { ResumenProcesamientoComponent } from '../layout/components/shared/resumen-procesamiento/resumen-procesamiento.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'ajuste-masivo', component: AjusteMasivoComponent },
   { path: 'consulta-auditoria', component: ConsultaAuditoriaComponent },
+  { path: 'resumen-procesamiento', component: ResumenProcesamientoComponent },
   { path: '**', redirectTo: 'login'}
 ];
 
