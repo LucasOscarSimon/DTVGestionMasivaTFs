@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
 //********** Módulos externos ******/
-import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDatepickerModule,NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 
 //********** Components ********/
 //********** General Components */
@@ -27,6 +27,8 @@ import { ImportacionComponent } from './layout/components/shared/importacion/imp
 import { ConsultaComponent } from './layout/components/shared/consulta/consulta.component';
 import { ResumenPreliminarComponent } from './layout/components/shared/resumen-preliminar/resumen-preliminar.component';
 import { ResumenProcesamientoComponent } from './layout/components/shared/resumen-procesamiento/resumen-procesamiento.component';
+import { NgbdDatepickerPopup } from './layout/components/shared/datepicker-popup/datepicker-popup.component';
+
 
 //********** Global Providers */
 import { GlobalEventsManager } from './layout/services/global-events-manager';
@@ -44,7 +46,8 @@ import { GlobalEventsManager } from './layout/services/global-events-manager';
     ImportacionComponent,
     ConsultaComponent,
     ResumenPreliminarComponent,
-    ResumenProcesamientoComponent
+    ResumenProcesamientoComponent,
+    NgbdDatepickerPopup
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */
@@ -54,6 +57,7 @@ import { GlobalEventsManager } from './layout/services/global-events-manager';
     //******* Aqui poner los Componentes Importados de ng-bootstrap */
     NgbPaginationModule, 
     NgbAlertModule,
+    NgbDatepickerModule,
     //******* Aqui poner el modulo de Ruteo principal */
     AppRoutingModule
   ],
