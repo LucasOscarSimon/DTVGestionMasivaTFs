@@ -1,11 +1,11 @@
 <div [hidden]="this.consultaOn || this.resumenPreliminarOn || this.resumenProcesamientoOn" class="container">
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
+  <div class="">
+    <div class=""></div>
+    <div class="">
         {{this.transaccion}} Masivos
         <app-importacion (upload)="this.resumenPreliminarOn = true" (statusChange)="this.consultaOn = !this.consultaOn"></app-importacion>
     </div>
-    <div class="col-md-4"></div>
+    <div class=""></div>
 </div>
 </div>
 
