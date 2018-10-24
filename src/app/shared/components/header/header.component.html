@@ -1,6 +1,36 @@
 <div *ngIf="showHeader">
-  <p >
-    header works!
-  </p>
+  <div class="container-fluid topcontainer" >   
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 titulo"><h4><strong><b>PORTAL GESTIÓN MASIVA DE TFS</b></strong></h4></div>
+        <div class="col-2 logotopright">
+            <img width="120" height="30" src="../../assets/images/logoMaster.png">
+        </div>
+    </div> 
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="dropdown-item" href="#">Ajustes Masivos</a>
+      </li>
+      <li class="nav-item">
+        <a class="dropdown-item" href="#">Pagos Masivos</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="dropdown-item" href="#">Borrado FTs Masivas</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="dropdown-item" href="#">Consulta de Auditoría</a>
+      </li>  
+    </ul>
+    <form class="form-inline my-2 my-lg-0"><a class="dropdown-item" href="#">Nombre de Usuario</a></form>
+  </div>
+  </nav>
+  <div class="dropdown-divider"></div>
+  <div class="logofondo">    
+  <img width="200" alt="logo" src="../../assets/images/logoInicio.png">
+  </div> 
 </div>
 

@@ -1,0 +1,24 @@
+.topcontainer {
+    background: #005187;    
+    width: auto;   
+    height: 80px;         
+}
+.titulo{
+    color: white;    
+    text-align: center; 
+    padding: 25px 150px;   
+}
+.logotopright{
+    padding-top: 15px;
+} 
+.logofondo{
+    padding: 60px 16px 15px 10px;    
+    overflow: hidden;
+    height: auto;   
+    text-align: center;
+}
+.navbar-bgcolor{
+    background: #005187;    
+    width: auto;   
+    height: 80px;   
+}
