@@ -54,9 +54,14 @@ export class ConsultaComponent implements OnInit {
     {name: 'Monto Total', id:5},
     {name: 'Fecha y Hora', id:6}
   ];
-  // cells:Cell[] = [
-
-  // ]
+   cells:Cell[] = [
+    {content: '23', id:1, columnId: 1},
+    {content: 'Archivo.xls', id:2, columnId: 2},
+    {content: 'PBLANCAS', id:3, columnId: 3},
+    {content: '1234', id:4, columnId: 4},
+    {content: '1234', id:5, columnId: 5},
+    {content: '12/12/2018 14:14', id:6, columnId: 6}
+   ];
 
   constructor() { }
 
