@@ -28,7 +28,7 @@ import { ConsultaComponent } from './layout/components/shared/consulta/consulta.
 import { ResumenPreliminarComponent } from './layout/components/shared/resumen-preliminar/resumen-preliminar.component';
 import { ResumenProcesamientoComponent } from './layout/components/shared/resumen-procesamiento/resumen-procesamiento.component';
 import { NgbdDatepickerPopup } from './layout/components/shared/datepicker-popup/datepicker-popup.component';
-
+import { AutogridComponent } from './layout/components/shared/autogrid/autogrid.component';
 
 //********** Global Providers */
 import { GlobalEventsManager } from './layout/services/global-events-manager';
@@ -47,7 +47,8 @@ import { GlobalEventsManager } from './layout/services/global-events-manager';
     ConsultaComponent,
     ResumenPreliminarComponent,
     ResumenProcesamientoComponent,
-    NgbdDatepickerPopup
+    NgbdDatepickerPopup,
+    AutogridComponent
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */
