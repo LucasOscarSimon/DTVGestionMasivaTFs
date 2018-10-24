@@ -19,6 +19,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 
 //********** Specific Components */
 import { LoginComponent } from './layout/components/login/login.component';
+import { HomeComponent } from './layout/components/home/home.component';
 import { AjusteMasivoComponent } from './layout/components/ajuste-masivo/ajuste-masivo.component';
 import { PagoMasivoComponent } from './layout/components/pago-masivo/pago-masivo.component';
 import { BorradoFtsMasivoComponent } from './layout/components/borrado-fts-masivo/borrado-fts-masivo.component';
@@ -32,6 +33,7 @@ import { AutogridComponent } from './layout/components/shared/autogrid/autogrid.
 
 //********** Global Providers */
 import { GlobalEventsManager } from './layout/services/global-events-manager';
+
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { GlobalEventsManager } from './layout/services/global-events-manager';
     ResumenPreliminarComponent,
     ResumenProcesamientoComponent,
     NgbdDatepickerPopup,
-    AutogridComponent
+    AutogridComponent,
+    HomeComponent
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */

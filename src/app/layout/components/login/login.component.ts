@@ -27,6 +27,6 @@ export class LoginComponent implements OnInit {
     console.log("ingresar");
     console.log(this.oUsuario);
     this.OGlobalEventsManager.showHeader.emit(true);
-    this.ORouter.navigate(['/ajuste-masivo']);
+    this.ORouter.navigate(['/home']);
   }
 }
