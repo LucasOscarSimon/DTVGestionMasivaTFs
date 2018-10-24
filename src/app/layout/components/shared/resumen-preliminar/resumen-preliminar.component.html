@@ -1,4 +1,94 @@
-<div>
+<div class="container py-4">
+    <div class="row">
+        <div class="col-sm-1"></div>
+
+        <div class="col-sm-10 bg-white">
+            <div class="panel panel-default">
+
+                <div class="panel panel-heading">
+                    <div class="py-4 ml-md-4">
+                        <h2>Resumen de Archivo a Procesar</h2>
+                    </div>
+                </div>
+
+                <div class="panel panel-body">
+                    <div class="px-4 ml-md-2 pb-4">
+                        <div class="form">
+
+                            <div class="row">
+                                <label for="" class="col-3 ">Registros Totales:</label>
+                                <label for="" class="col-3">12345</label>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-3 ">Monto Total:</label>
+                                <label for="" class="col-3 ">1253634</label>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-3 ">Nombre del Archivo:</label>
+                                <label for="" class="col-3 ">Archivo.xml</label>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-3 ">Usuario:</label>
+                                <label for="" class="col-3 ">Fernando Fernandez</label>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-3 ">Fecha y Hora:</label>
+                                <label for="" class="col-3 ">24/10/2018 14:10</label>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-3 ">Registros Fallidos:</label>
+                                <label for="" class="col-3 ">58265</label>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-3 ">Motivo/Razón:</label>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="url">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="py-2">
+                            <!-- <h6 class="col-5 my-2">Detalle de Registros Fallidos</h6> -->
+                            <label for="" class="col-5 my-2">Detalle de Registros Fallidos</label>
+                            <table class="table">
+                                <tr>
+                                    <th>Fila</th>
+                                    <th>Columna</th>
+                                    <th>Detalle</th>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>3</td>
+                                    <td>Detalle de la falla</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-end row">
+                            <button class="col-3 mb-2 btn btn-primary" (click)="confirmarCarga()" id="btnConsultar">Confirmar
+                                Carga</button>
+                        </div>
+                        <div class="d-flex justify-content-end row">
+                            <button class="col-3 mb-2 btn btn-primary btn-block" (click)="confirmarCarga()" id="btnConsultar">Cancelar
+                                Carga</button>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-1"></div>
+    </div>
+</div>
+
+
+
+
+<!-- <div>
     <h3>Resumen de Archivo a Procesar</h3>
     <table>
         <tr>
@@ -46,4 +136,4 @@
     </table>
     <p><button class="btn btn-dtv" (click)="confirmarCarga()">Confirmar Carga</button></p>
     <p><button class="btn btn-dtv" (click)="cancelarCarga()">Cancelar Carga</button></p>
-</div>
+</div> -->
