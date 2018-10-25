@@ -9,19 +9,19 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 
 export class ImportacionComponent implements OnInit {
-  @Output() statusChange = new EventEmitter();
-  @Output() upload = new EventEmitter();
+  @Output() oCambioEstado = new EventEmitter();
+  @Output() oSimularSubida = new EventEmitter();
   constructor() {
    }
 
   ngOnInit() {  }
 
   abrirConsulta(){
-    this.statusChange.emit();
+    this.oCambioEstado.emit();
   }
 
   cargarArchivo(){
-    this.upload.emit();
+    this.oSimularSubida.emit();
   }
 
 }

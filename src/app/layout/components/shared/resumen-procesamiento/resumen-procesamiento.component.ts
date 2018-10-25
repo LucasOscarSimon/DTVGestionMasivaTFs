@@ -6,15 +6,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./resumen-procesamiento.component.css']
 })
 export class ResumenProcesamientoComponent implements OnInit {
-  @Input() transaccion: string;
-  @Output() backToStart = new EventEmitter();
+  @Input() strTipoTransaccion: string;
+  @Output() oVolverAlInicio = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
   }
 
   goBack(){
-    this.backToStart.emit();
+    this.oVolverAlInicio.emit();
   }
 
 }
