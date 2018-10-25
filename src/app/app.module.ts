@@ -39,6 +39,7 @@ import { AutogridComponent } from './layout/components/shared/autogrid/autogrid.
 
 //********** Global Providers */
 import { GlobalEventsManager } from './layout/services/global-events-manager';
+import { TestComponentsComponent } from './test-components/test-components.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { GlobalEventsManager } from './layout/services/global-events-manager';
     ResumenProcesamientoComponent,
     NgbdDatepickerPopup,
     AutogridComponent,
-    HomeComponent
+    HomeComponent,
+    TestComponentsComponent
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */
