@@ -4,7 +4,7 @@
 
         <div class="col-sm-6 bg-white">
             <div class="panel panel-default">
-                
+
                 <div class="panel panel-heading">
                     <div class="py-4 ml-md-4">
                         <h2>Importación de Archivo</h2>
@@ -16,15 +16,49 @@
                         <div class="form">
 
                             <div class="form-group row">
-                                <label for="url" class="col-sm-0 col-form-label">URL:</label>
+
+                                <!-- <label class="custom-file">
+                                    <input type="file" id="file" class="custom-file-input">
+                                    <label for="file" class="custom-file-label"></label>
+                                </label> -->
+                                <div class="">
+                                    <!-- <input type="text" class="custom-file-input"> -->
+                                    <input type="file" class="custom-file" id="">
+                                </div>
+                               
+
+
+
+                                <!-- <label for="url" class="col-sm-0 col-form-label">URL:</label>
                                 <div class="col">
                                     <input type="text" class="form-control" id="url">
-                                </div>
-                                <button class="btn btn-primary" id="btnExaminar">Examinar...</button>
+                                </div> -->
+                                <!-- <div class="col custom-file">
+                                    <input type="file" class="form-control-btn" id="exampleFormControlFile1">
+                                </div> -->
+
+                                <!-- <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                </div> -->
+
+
+                                <!-- <div class="file-field">
+                                        <div class="btn btn-primary btn-sm float-left">
+                                            <span>Choose file</span>
+                                            <input type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text" placeholder="Upload your file">
+                                        </div>
+                                    </div> -->
+
+                                <!-- <button class="btn btn-primary" id="btnExaminar">Examinar...</button> -->
+                                <!-- <input type="file" class="form-control-file" id="exampleFormControlFile1"> -->
                             </div>
 
                             <div class="form-inline row">
-                                <button class="btn btn-primary col my-2 mr-4 ml-2" (click)="abrirConsulta()" id="btnConsultarHistorial">Consultar
+                                <button class="btn btn-primary col-sm-5 my-2 mr-3 ml-2" (click)="abrirConsulta()" id="btnConsultarHistorial">Consultar
                                     Historial</button>
                                 <button class="btn btn-primary col my-2 mx-2 " (click)="cargarArchivo()" id="btnCargar">Cargar</button>
                                 <button class="btn btn-primary col my-2 mx-2 " id="btnCancelar">Cancelar</button>
@@ -41,7 +75,7 @@
 
             </div>
         </div>
-        
+
         <div class="col-md-3"></div>
     </div>
 </div>
