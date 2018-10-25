@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
+var consultaOn:boolean = false;
+var resumenPreliminarOn:boolean = false;
+var resumenProcesamientoOn:boolean = false;
+
 @Component({
   selector: 'app-pago-masivo',
   templateUrl: './pago-masivo.component.html',
   styleUrls: ['./pago-masivo.component.css']
 })
 export class PagoMasivoComponent implements OnInit {
+  transaccion:string = 'Pago';
   uploadedFiles: any[] = [];
   constructor() { }
 
