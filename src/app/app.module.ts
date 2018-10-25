@@ -16,6 +16,7 @@ import {NgbDatepickerModule,NgbPaginationModule, NgbAlertModule} from '@ng-boots
 import {PanelModule} from 'primeng/panel';
 import {CardModule} from 'primeng/card';
 import {FileUploadModule} from 'primeng/fileupload';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 //********** Components ********/
 //********** General Components */
