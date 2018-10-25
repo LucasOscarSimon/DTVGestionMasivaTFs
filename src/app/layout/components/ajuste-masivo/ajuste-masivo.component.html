@@ -2,8 +2,8 @@
   <div class="">
     <div class=""></div>
     <div class="">
-        {{this.transaccion}} Masivos
-        <app-importacion (upload)="this.resumenPreliminarOn = true" (statusChange)="this.consultaOn = !this.consultaOn"></app-importacion>
+        {{this.strTipoTransaccion}} Masivos
+        <app-importacion (oSimularSubida)="this.resumenPreliminarOn = true" (oCambioEstado)="this.consultaOn = !this.consultaOn"></app-importacion>
     </div>
     <div class=""></div>
 </div>
@@ -12,7 +12,7 @@
 <div [hidden]="!this.resumenPreliminarOn" class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-resumen-preliminar (confirmUpload)="this.resumenProcesamientoOn = true" (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>
+      <app-resumen-preliminar (oConfirmarSubida)="this.resumenProcesamientoOn = true" (oCancelarSubida)="this.resumenPreliminarOn = false"></app-resumen-preliminar>
     </div>
   </div>
 </div>
@@ -20,7 +20,7 @@
 <div [hidden]="!this.resumenProcesamientoOn" class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-resumen-procesamiento [transaccion]="this.transaccion" (backToStart)="this.resumenProcesamientoOn = false"></app-resumen-procesamiento>
+      <app-resumen-procesamiento [strTipoTransaccion]="this.strTipoTransaccion" (oVolverAlInicio)="this.resumenProcesamientoOn = false"></app-resumen-procesamiento>
     </div>
   </div>
 </div>
@@ -28,7 +28,7 @@
 <div [hidden]="!this.consultaOn" class="container">
   <div class="row">      
       <div class="col-md-12">
-          <app-consulta [transaccion]="this.transaccion" (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
+          <app-consulta [strTipoTransaccion]="this.strTipoTransaccion" (oCambioEstado)="this.consultaOn = !this.consultaOn"></app-consulta>
       </div>
   </div>
 </div>

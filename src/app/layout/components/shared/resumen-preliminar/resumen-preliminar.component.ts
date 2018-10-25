@@ -6,20 +6,20 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./resumen-preliminar.component.css']
 })
 export class ResumenPreliminarComponent implements OnInit {
-  @Output() confirmUpload = new EventEmitter();
-  @Output() cancelUpload = new EventEmitter();
+  @Output() oConfirmarSubida = new EventEmitter();
+  @Output() oCancelarSubida = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
   }   
 
   confirmarCarga(){
-    this.confirmUpload.emit();
-    this.cancelUpload.emit();
+    this.oConfirmarSubida.emit();
+    this.oCancelarSubida.emit();
   }
 
   cancelarCarga(){
-    this.cancelUpload.emit();
+    this.oCancelarSubida.emit();
   }
   
 }
