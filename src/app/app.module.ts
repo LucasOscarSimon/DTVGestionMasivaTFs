@@ -8,8 +8,14 @@ import { FormsModule } from '@angular/forms';
 //********** Routing Pages ********/
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
+//********** Animation Module Angular for PrimeNg */
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 //********** Módulos externos ******/
 import {NgbDatepickerModule,NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
+import {PanelModule} from 'primeng/panel';
+import {CardModule} from 'primeng/card';
+import {FileUploadModule} from 'primeng/fileupload';
 
 //********** Components ********/
 //********** General Components */
@@ -62,6 +68,12 @@ import { GlobalEventsManager } from './layout/services/global-events-manager';
     NgbPaginationModule, 
     NgbAlertModule,
     NgbDatepickerModule,
+    //******* Aqui el animation module de Angular para uso de componentes PrimeNg*/
+    BrowserAnimationsModule,
+    //******* Aqui poner los Componentes Importados de PrimeNg */
+    PanelModule,
+    CardModule,
+    FileUploadModule,
     //******* Aqui poner el modulo de Ruteo principal */
     AppRoutingModule
   ],

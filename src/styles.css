@@ -1,6 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/font-awesome/css/font-awesome.css";
 @import "./css/bootstrap.min.css";
+@import "../node_modules/mdbootstrap/css/mdb.min.css";
+
 @import "./css/bootstrap-grid.min.css";
+@import "../node_modules/primeicons/primeicons.css";
+@import "../node_modules/primeng/resources/themes/nova-light/theme.css";
+@import "../node_modules/primeng/resources/primeng.min.css";
+
+
 /* @import '~font-awesome/css/font-awesome.css'; */
 body{
     background-color: #EEEEEE;
@@ -10,4 +18,8 @@ body{
     background-color: #0072C6 !important;
     border-color: #0072C6 !important;
     color: #fff;
+}
+
+.cus-container{
+    margin: 10px;
 }
