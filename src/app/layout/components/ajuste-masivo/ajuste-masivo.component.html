@@ -1,8 +1,7 @@
 <div [hidden]="consultaOn || resumenPreliminarOn || resumenProcesamientoOn" class="container">
   <div class="">
     <div class=""></div>
-    <div class="">
-        <!--{{this.transaccion}} Masivos-->
+    <div class="">        
         <app-importacion (archivoCargado)="cargarArchivo($event)" 
             [transaccion]="transaccion" (upload)="validarCsv()"
             [progresoCarga]="progresoCarga" 
@@ -16,7 +15,8 @@
   <div class="row">
     <div class="col-md-12">
       <!--<app-resumen-preliminar  [cols]="this.cols" [registros]="this.registros" (confirmUpload)="this.resumenProcesamientoOn = true" (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>-->
-      <app-resumen-preliminar (confirmUpload)="confirmUpload($event)" 
+      <app-resumen-preliminar (confirmUpload)="confirmUpload($event)"
+                              [cols]="this.headersPreliminarFallidos"
           (stopUpload)="stopUpload()"
           [obeAjusteMasivo]="obeAjusteMasivo"
           [existeRegistrosInvalidos]="existeRegistrosInvalidos" 
@@ -29,7 +29,9 @@
   <div class="row">
     <div class="col-md-12">
       <!--[cols]="this.cols" [registros]="this.registros"-->
-      <app-resumen-procesamiento [transaccion]="this.transaccion" [obeAjusteMasivo]="obeAjusteMasivo"
+      <app-resumen-procesamiento [transaccion]="this.transaccion"
+                                 [cols]="this.headersPreliminarFallidos"
+                                 [obeAjusteMasivo]="obeAjusteMasivo"
           (backToStart)="backToStart()"></app-resumen-procesamiento>
     </div>
   </div>
@@ -42,6 +44,7 @@
   [registrosConsulta]="this.registrosConsulta"
   [estados]="this.estados"-->
       <app-consulta [transaccion]="this.transaccion"
+                    [headersConsulta] ="this.headersConsulta"                    
                     (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
     </div>
   </div>

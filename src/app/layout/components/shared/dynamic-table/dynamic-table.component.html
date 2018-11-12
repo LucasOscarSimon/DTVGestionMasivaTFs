@@ -1,0 +1,66 @@
+<div class="conteiner py-2">
+
+  <p-table [value]="loData" [columns]="oHeaderTable" [paginator]="true" [rows]="10"
+           [responsive]="true" [scrollable]="true" [resizableColumns]="true">
+    <ng-template pTemplate="caption">
+      <div style="text-align: left">
+
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-oData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{oData[col.field]}}
+        </td>
+        <!--<td>
+          <button pButton icon="pi pi-search"></button>
+        </td>-->
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
+<!--<p-table #dtAuditoria [value]="loData" [paginator]="true" [rows]="10"
+             [responsive]="true" [scrollable]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Nombre del Archivo</th>
+          <th>Usuario</th>
+          <th>Proceso</th>
+          <th>Nro. de Registros del Archivo</th>
+          <th>Nro. de Registros Procesados</th>
+          <th>Nro. de Registros Válidos</th>
+          <th>Nro. de Registros Fallidos</th>
+          <th>Monto Total</th>
+          <th>Fecha y Hora</th>
+          <th>Motivo</th>
+          <th>Estado</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-oreg>
+        <tr>
+          <td>{{oreg.IdAuditoria}}</td>
+          <td>{{oreg.Archivo}}</td>
+          <td>{{oreg.UsuarioWindows}}</td>
+          <td>{{oreg.TipoProceso.DescripcionAdicional}}</td>
+          <td>{{oreg.NroRegistrosArchivo}}</td>
+          <td>{{oreg.NroRegistrosProcesados}}</td>
+          <td>{{oreg.NroRegistrosValidos}}</td>
+          <td>{{oreg.NroRegistrosFallidos}}</td>
+          <td>{{oreg.MontoTotal}}</td>
+          <td>{{oreg.FechaModificacion}}</td>
+          <td>{{oreg.Motivo}}</td>
+          <td>{{oreg.Estado.Descripcion}}</td>
+        </tr>
+      </ng-template>
+    </p-table>-->

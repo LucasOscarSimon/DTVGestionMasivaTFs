@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AjusteMasivo } from '../../../models/ajuste-masivo/ajuste-masivo';
+import { HeaderTable } from '../../../models/dynamic-table/header-table';
 
 @Component({
   selector: 'app-resumen-procesamiento',
@@ -7,7 +8,7 @@ import { AjusteMasivo } from '../../../models/ajuste-masivo/ajuste-masivo';
   styleUrls: ['./resumen-procesamiento.component.css']
 })
 export class ResumenProcesamientoComponent implements OnInit {
-  @Input() cols: any[];
+  @Input() cols: HeaderTable[];
   @Input() registros: any[];
   @Input() transaccion: string;
   @Input() obeAjusteMasivo: AjusteMasivo;
@@ -18,7 +19,7 @@ export class ResumenProcesamientoComponent implements OnInit {
 
   }
 
-  abrirUpload() {
+  abrirUpload(){
     this.backToStart.emit();
   }
 
