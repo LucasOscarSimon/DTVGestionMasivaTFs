@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestComponentsComponent implements OnInit {
 
+  prueba:string="";
   constructor() { }
 
   ngOnInit() {
   }
 
+  csv2Array(eve){
+    
+  }
 }

@@ -1,18 +1,22 @@
 <div [hidden]="this.consultaOn || this.resumenPreliminarOn || this.resumenProcesamientoOn" class="container">
   <div class="">
     <div class=""></div>
-    <div class="">
-        {{this.transaccion}} Masivos
-        <app-importacion (upload)="this.resumenPreliminarOn = true" (statusChange)="this.consultaOn = !this.consultaOn"></app-importacion>
+    <div class="">      
+      <app-importacion (upload)="this.resumenPreliminarOn = true"
+                       [transaccion]="this.transaccion"
+                       (statusChange)="this.consultaOn = !this.consultaOn"></app-importacion>
     </div>
     <div class=""></div>
-</div>
+  </div>
 </div>
 
 <div [hidden]="!this.resumenPreliminarOn" class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-resumen-preliminar (confirmUpload)="this.resumenProcesamientoOn = true" (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>
+      <app-resumen-preliminar (confirmUpload)="this.resumenProcesamientoOn = true"
+                              [cols]="this.cols"
+                              [registros]="this.registros"
+                              (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>
     </div>
   </div>
 </div>
@@ -20,15 +24,22 @@
 <div [hidden]="!this.resumenProcesamientoOn" class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-resumen-procesamiento [transaccion]="this.transaccion" (backToStart)="this.resumenProcesamientoOn = false"></app-resumen-procesamiento>
+      <app-resumen-procesamiento [transaccion]="this.transaccion"
+                                 [cols]="this.cols"
+                                 [registros]="this.registrosProcesamiento"
+                                 (backToStart)="this.resumenProcesamientoOn = false"></app-resumen-procesamiento>
     </div>
   </div>
 </div>
 
 <div [hidden]="!this.consultaOn" class="container">
-  <div class="row">      
-      <div class="col-md-12">
-          <app-consulta [transaccion]="this.transaccion" (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <app-consulta [transaccion]="this.transaccion"
+                    [colsConsulta]="this.colsConsulta"
+                    [registrosConsulta]="this.registrosConsulta"
+                    [estados]="this.estados"
+                    (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
+    </div>
   </div>
 </div>

@@ -7,45 +7,137 @@
     </div>
 
     <div class="panel-body">
-      <div class="px-4 ml-md-4 pb-4">
+      <div class="px-3 ml-md-4 pb-4">
+
         <form class="form">
           <div class="form-group row">
             <label for="desde" class="col-sm-1 col-form-label">Desde:</label>
             <div class="col-sm-2">
-              <input type="date" class="form-control" id="desde">
+              <p-calendar [(ngModel)]="dteFechaInicio" dateFormat="dd/mm/yy" 
+                  [ngModelOptions]="{standalone: true}"></p-calendar>
+            </div>
+            <div class="col-sm-1"></div>
+            <label for="archivoName" class="col-sm-1 col-form-label">Archivo:</label>
+            <div class="col-sm-3">
+              <input type="text" [(ngModel)]="strNombreArchivo" 
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="archivoName">
+            </div>
+            
+            <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
+            <div class="col-sm-2">
+              <p-dropdown [options]="estados"
+                          [(ngModel)]="numEstado"
+                          optionLabel="name"
+                          [showClear]="true"
+                          [ngModelOptions]="{standalone: true}"
+                          placeholder="Seleccionar un estado">
+                          <!--[(ngModel)]="estadoSeleccionado"-->                         
+              </p-dropdown>
+
             </div>
           </div>
+
           <div class="form-group row">
             <label for="hasta" class="col-sm-1 col-form-label">Hasta:</label>
             <div class="col-sm-2">
-              <input type="date" class="form-control" id="hasta">
+              <p-calendar [(ngModel)]="dteFechaFin" dateFormat="dd/mm/yy" 
+                    [ngModelOptions]="{standalone: true}"></p-calendar>
             </div>
-            <button class="btn btn-primary" id="btnConsultar">Consultar</button>
+            <div class="col-sm-1"></div>
+            <label for="proceso" class="col-sm-1 col-form-label">Proceso: </label>
+            <div class="col-sm-2">
+              <p-dropdown [options]="procesos"
+                          [(ngModel)]="numTipoProceso"
+                          placeholder="Seleccionar un proceso"
+                          optionLabel="name"
+                          [ngModelOptions]="{standalone: true}"
+                          [showClear]="true">
+                <!--[(ngModel)]="procesoSeleccionado"-->
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <button pButton type="button" label="Consultar"></button>
           </div>
         </form>
 
         <div class="py-2">
-          <table class="table">
-            <tr>
-              <th>Id Proceso</th>
-              <th>Tipo</th>
-              <th>Usuario</th>
-              <th>Fecha y Hora</th>
-              <th>Motivo</th>
-            </tr>
-            <tr>
-              <td>12</td>
-              <td>Borrado</td>
-              <td>PBASDTS</td>
-              <td>23/10/2018 12:18</td>
-              <td>Motivo</td>
-            </tr>
-          </table>
+            <p-table #dtAuditoria [value]="loRegistrosAuditoria" [paginator]="true" [rows]="10"
+            [responsive]="true" [scrollable]="true" [resizableColumns]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre del Archivo</th>
+                        <th>Usuario</th>
+                        <th>Proceso</th>
+                        <th>Nro. de Registros del Archivo</th>
+                        <th>Nro. de Registros Procesados</th>
+                        <th>Nro. de Registros Válidos</th>
+                        <th>Nro. de Registros Fallidos</th>
+                        <th>Monto Total</th>
+                        <th>Fecha y Hora</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-oreg>
+                    <tr>
+                        <td>{{oreg.IdAuditoria}}</td>
+                        <td>{{oreg.Archivo}}</td>
+                        <td>{{oreg.UsuarioWindows}}</td>
+                        <td>{{oreg.TipoProceso.DescripcionAdicional}}</td>
+                        <td>{{oreg.NroRegistrosArchivo}}</td>
+                        <td>{{oreg.NroRegistrosProcesados}}</td>
+                        <td>{{oreg.NroRegistrosValidos}}</td>
+                        <td>{{oreg.NroRegistrosFallidos}}</td>
+                        <td>{{oreg.MontoTotal}}</td>
+                        <td>{{oreg.FechaModificacion}}</td>
+                        <td>{{oreg.Motivo}}</td>
+                        <td>{{oreg.Estado.Descripcion}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+          <!-- <p-table [value]="registrosConsulta" [columns]="colsConsulta" [paginator]="true" [rows]="10" 
+                   [responsive]="true">
+            <ng-template pTemplate="caption">
+              <div style="text-align: left">
+
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  {{rowData[col.field]}}
+                </td>
+                <td>
+                  <button pButton icon="pi pi-search" (click)="DetalleBorrado()"></button>                  
+                </td>                
+              </tr>
+            </ng-template>
+          </p-table> -->
         </div>
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" id="btnConsultar">  Salir  </button>
+
+
+        <div class="d-flex justify-content-between mx-3 my-3">
+          <div>
+            <button pButton type="button" icon="pi pi-file" label="Descargar"></button>
+          </div>
+          <div>
+            <button pButton type="button" label="Salir"></button>
+          </div>
         </div>
-        
+
       </div>
     </div>
   </div>

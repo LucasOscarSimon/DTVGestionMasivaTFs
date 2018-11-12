@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { AjusteMasivo } from '../../../models/ajuste-masivo/ajuste-masivo';
 
 @Component({
   selector: 'app-resumen-procesamiento',
@@ -6,15 +7,19 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./resumen-procesamiento.component.css']
 })
 export class ResumenProcesamientoComponent implements OnInit {
-  @Input() strTipoTransaccion: string;
-  @Output() oVolverAlInicio = new EventEmitter();
+  @Input() cols: any[];
+  @Input() registros: any[];
+  @Input() transaccion: string;
+  @Input() obeAjusteMasivo: AjusteMasivo;
+  @Output() backToStart = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
+
   }
 
-  goBack(){
-    this.oVolverAlInicio.emit();
+  abrirUpload() {
+    this.backToStart.emit();
   }
 
 }

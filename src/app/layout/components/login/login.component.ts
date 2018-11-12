@@ -9,7 +9,7 @@ import { GlobalEventsManager } from '../../services/global-events-manager';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  MensajeBienvenida:string="";
+  MensajeBienvenida = '';
   oUsuario: Usuario;
   constructor(
     private ORouter: Router,
@@ -17,14 +17,14 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.oUsuario={
-      strUsuario:'',
-      strPassword:''
+    this.oUsuario = {
+      strUsuario: '',
+      strPassword: ''
     }
   }
 
-  onClickIngresar(){
-    console.log("ingresar");
+  onClickIngresar() {
+    console.log('ingresar');
     console.log(this.oUsuario);
     this.OGlobalEventsManager.showHeader.emit(true);
     this.ORouter.navigate(['/home']);

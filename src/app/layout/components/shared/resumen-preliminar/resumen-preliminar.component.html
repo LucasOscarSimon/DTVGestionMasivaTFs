@@ -1,10 +1,10 @@
 <div class="container py-4">
     <div class="row">
-        <div class="col-sm-1"></div>
+        <div class="col-sm-2"></div>
 
-        <div class="col-sm-10 bg-white">
+        <div class="col-sm-8 bg-white">
             <div class="panel panel-default">
-
+               
                 <div class="panel panel-heading">
                     <div class="py-4 ml-md-4">
                         <h2>Resumen de Archivo a Procesar</h2>
@@ -12,68 +12,113 @@
                 </div>
 
                 <div class="panel panel-body">
-                    <div class="px-4 ml-md-2 pb-4">
+                    <div class="px-4 pb-4">
                         <div class="form">
 
                             <div class="row">
-                                <label for="" class="col-3 ">Registros Totales:</label>
-                                <label for="" class="col-3">12345</label>
+                                <label for="" class="col-3 pr-0 ">Cantidad de Registros:</label>
+                                <label for="" class="col">{{obeAjusteMasivo.obeCabecera.NroRegistrosArchivo}}</label>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 ">Monto Total:</label>
-                                <label for="" class="col-3 ">1253634</label>
+                                <label for="" class="col-3 pr-0 ">Monto Total:</label>
+                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.MontoTotal}}</label>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 ">Nombre del Archivo:</label>
-                                <label for="" class="col-3 ">Archivo.xml</label>
+                                <label for="" class="col-3 pr-0">Nombre del Archivo:</label>
+                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.NombreArchivo}}</label>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 ">Usuario:</label>
-                                <label for="" class="col-3 ">Fernando Fernandez</label>
+                                <label for="" class="col-3 pr-0">Usuario:</label>
+                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.NombreUsuario}}</label>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 ">Fecha y Hora:</label>
-                                <label for="" class="col-3 ">24/10/2018 14:10</label>
+                                <label for="" class="col-3 pr-0">Fecha y Hora:</label>&nbsp;&nbsp;&nbsp;
+                                <p-calendar [(ngModel)]="dteFechaActual" [locale]="es" dateFormat="dd/mm/yy" 
+                                    [disabled]="true"></p-calendar>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 ">Registros Fallidos:</label>
-                                <label for="" class="col-3 ">58265</label>
+                                <label for="" class="col-3 pr-0">Registros Fallidos:</label>
+                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.NroRegistrosFallidos}}</label>
                             </div>
-                            <div class="row">
-                                <label for="" class="col-3 ">Motivo/Razón:</label>
+                            <div *ngIf="!existeRegistrosInvalidos" class="row">
+                                <div class="d-flex col-3 pr-0 align-items-center">Motivo/Razón:</div>
                                 <div class="col">
-                                    <input type="text" class="form-control" id="url">
+                                    <input type="text" [(ngModel)]="strMotivoImportacion" class="form-control" [disabled]="mostrarAnular"
+                                     id="motivo">
                                 </div>
                             </div>
+
                         </div>
 
-                        <div class="py-2">
-                            <!-- <h6 class="col-5 my-2">Detalle de Registros Fallidos</h6> -->
-                            <label for="" class="col-5 my-2">Detalle de Registros Fallidos</label>
-                            <table class="table">
-                                <tr>
-                                    <th>Fila</th>
-                                    <th>Columna</th>
-                                    <th>Detalle</th>
-                                </tr>
-                                <tr>
-                                    <td>12</td>
-                                    <td>3</td>
-                                    <td>Detalle de la falla</td>
-                                </tr>
-                            </table>
+                        <div *ngIf="existeRegistrosInvalidos">
+                          <div class="row py-2">
+                            <div class="alert alert-warning" role="alert">
+                              Los registros fallidos deben ser subsanados y cargar un archivos
+                              nuevo. La carga no procede
+                            </div>                            
+                          </div>
+
+                            <div class="py-2">
+                                <p-table [value]="registros" [columns]="cols" 
+                                    [paginator]="true" [rows]="10" [style]="{width: 'auto'}"
+                                    [responsive]="true">
+                                    <ng-template pTemplate="caption">
+                                        <div style="text-align: left">Detalle de Registros Fallidos
+                                            <!-- <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                                      <input type="text" pInputText size="50" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        style="width:auto"> -->
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                          <th *ngFor="let col of columns" >
+                                            {{col.header}}
+                                          </th>                                            
+                                        </tr>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns" >
+                                      <tr>
+                                        <td *ngFor="let col of columns">
+                                          {{rowData[col.field]}}
+                                        </td>
+
+                                        <!--<td><button pButton type="button" icon="pi pi-pencil" (click)="ClickEditar(entidades)"></button></td>-->
+                                      </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <div class="d-flex justify-content-end mb-3 pt-4 px-4">
+                                <!-- <div>
+                                        <button pButton type="button" (click)="cancelarCarga()" label="Retornar"></button>
+                                    </div> -->
+                                <div>
+                                    <button pButton type="button" (click)="mostrarSinErrores()" label="Retornar"></button>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="d-flex justify-content-end row">
-                            <button class="col-3 mb-2 btn btn-primary" (click)="confirmarCarga()" id="btnConsultar">Confirmar
-                                Carga</button>
-                        </div>
-                        <div class="d-flex justify-content-end row">
-                            <button class="col-3 mb-2 btn btn-primary btn-block" (click)="cancelarCarga()" id="btnConsultar">Cancelar
-                                Carga</button>
+
+                        <div *ngIf="!existeRegistrosInvalidos && !mostrarAnular" class="d-flex justify-content-between mb-3 pt-4 px-4">
+                            <div>
+                                <button pButton type="button" (click)="confirmarCarga()" label="Confirmar Carga"></button>
+                            </div>
+                            <div>
+                                <button pButton type="button" (click)="cancelarCarga()" label="Cancelar Carga"></button>
+                            </div>
                         </div>
 
+                        <div *ngIf="!existeRegistrosInvalidos && mostrarAnular" class="d-flex justify-content-between mb-3 pt-4 px-4">
+                            <div>
+                                <button pButton type="button" (click)="anularCarga()" label="Anular Carga"></button>
+                            </div>                            
+                        </div>
 
+                        <div *ngIf="isLoading">
+                            <img src="./assets/images/loadingCircle.gif" />
+                        </div>
 
                     </div>
                 </div>
@@ -81,7 +126,7 @@
             </div>
         </div>
 
-        <div class="col-sm-1"></div>
+        <div class="col-sm-2"></div>
     </div>
 </div>
 
