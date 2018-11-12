@@ -10,33 +10,34 @@
   </div>
 </div>
 
-<div *ngIf="this.resumenPreliminarOn" class="container">
+<div [hidden]="!this.resumenPreliminarOn" class="container">
   <div class="row">
     <div class="col-md-12">
       <app-resumen-preliminar (confirmUpload)="this.resumenProcesamientoOn = true"
-                              
+                              [cols]="this.cols"
                               [registros]="this.registros"
                               (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>
     </div>
   </div>
 </div>
 
-<div *ngIf="this.resumenProcesamientoOn" class="container">
+<div [hidden]="!this.resumenProcesamientoOn" class="container">
   <div class="row">
     <div class="col-md-12">
       <app-resumen-procesamiento [transaccion]="this.transaccion"
-                                 
+                                 [cols]="this.cols"
                                  [registros]="this.registrosProcesamiento"
                                  (backToStart)="this.resumenProcesamientoOn = false"></app-resumen-procesamiento>
     </div>
   </div>
 </div>
 
-<div *ngIf="this.consultaOn" class="container">
+<div [hidden]="!this.consultaOn" class="container">
   <div class="row">
     <div class="col-md-12">
       <app-consulta [transaccion]="this.transaccion"
-                    [headersConsulta] ="this.headersConsulta"                    
+                    [colsConsulta]="this.colsConsulta"
+                    [registrosConsulta]="this.registrosConsulta"
                     [estados]="this.estados"
                     (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
     </div>

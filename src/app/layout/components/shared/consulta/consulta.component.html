@@ -2,7 +2,7 @@
   <div class="panel panel-default bg-white">
     <div class="panel-heading">
       <div class="py-4 ml-md-4">
-        <h2>Reporte de {{transaccion}} Masivoss</h2>
+        <h2>Reporte de {{transaccion}} Masivos</h2>
       </div>
     </div>
 
@@ -56,9 +56,8 @@
 
         </form>
 
-        <app-dynamic-table [oHeaderTable]="headersConsulta" [loData]="registrosConsulta"></app-dynamic-table>
 
-        <!--<div class="py-2">
+        <div class="py-2">
           <p-table [value]="registrosConsulta" [columns]="colsConsulta" 
               [paginator]="true" [rows]="10" [style]="{width: 'auto'}"
               [responsive]="true">
@@ -80,11 +79,13 @@
               <tr>
                 <td *ngFor="let col of columns">
                   {{rowData[col.field]}}
-                </td>                
+                </td>
+
+                <!--<td><button pButton type="button" icon="pi pi-pencil" (click)="ClickEditar(entidades)"></button></td>-->
               </tr>
             </ng-template>
           </p-table>
-        </div>-->
+        </div>
 
 
         <div class="d-flex justify-content-end mx-3 my-3">

@@ -26,7 +26,7 @@
     <div class="row">
       <div class="col-md-12">
         <app-resumen-procesamiento [transaccion]="this.transaccion"
-                                   
+                                   [cols]="this.cols"
                                    [registros]="this.registros"
                                    (backToStart)="this.resumenProcesamientoOn = false"></app-resumen-procesamiento>
       </div>
@@ -37,33 +37,10 @@
     <div class="row">      
         <div class="col-md-12">
             <app-consulta [transaccion]="this.transaccion"
-                          
+                          [colsConsulta] ="this.colsConsulta"
                           [registrosConsulta]="this.registrosConsulta"
                           [estados]="this.estados"
                           (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
         </div>
     </div>
   </div>
-
-<!-- <div class="cus-container">
-  <p-card title="Pagos Masivos">
-    <div class="custom-file mb-3">
-        <input type="file" class="custom-file-input" id="customFile" name="filename"
-            accept=".csv" (change)="csv2Array($event)">
-        <label class="custom-file-label" for="customFile">Seleccione su archivo CSV</label>
-    </div>
-
-    <form class="md-form">
-        <div class="file-field">
-            <div class="btn btn-primary btn-sm float-left">
-                <span>Choose file</span>
-                <input type="file" mdbFileSelect>
-            </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" 
-                placeholder="Upload your file">
-            </div>
-        </div>
-    </form>
-  </p-card>
-</div> -->

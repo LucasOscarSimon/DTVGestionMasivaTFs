@@ -6,9 +6,9 @@ import { Usuario } from '../../models/login/usuario';
   providedIn: 'root'
 })
 export class LoginService implements LoginInterface{
-  
+
   logIn(oUsuario: Usuario): boolean {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   constructor() { }
