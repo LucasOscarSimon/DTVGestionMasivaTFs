@@ -1,6 +1,6 @@
 export class DetalleAjusteMasivo {
     IdClienteIBS:number;
-    FechaAjuste:string;//Date
+    FechaAjuste:Date;//Date//string
     FinanceBatchId: number;
     FinanceBatchCode: string;
     FinancialAccountId: number;

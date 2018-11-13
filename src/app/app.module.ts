@@ -47,13 +47,27 @@ import { DynamicTableComponent } from './layout/components/shared/dynamic-table/
 
 //********** Global Providers */
 import { GlobalEventsManager } from './layout/services/global-events-manager';
-import { TestComponentsComponent } from './test-components/test-components.component';
+import { GlobalParametersService } from './layout/services/global-parameters-service';
 
 //********** IMPORT HTTP */
 import { HttpClientModule }    from '@angular/common/http';
 
 //********** IMPORT SERVICES */
-import { TransaccionesFinancierasService } from './layout/services/transacciones-financieras/transacciones-financieras.service'
+import { LoginService } from './layout/services/login/login.service'
+import { AjusteMasivoService } from './layout/services/ajuste-masivo/ajuste-masivo.service';
+import { BorradoMasivoService } from './layout/services/borrado-masivo/borrado-masivo.service';
+import { ConsultaAuditoriaService } from './layout/services/consulta-auditoria/consulta-auditoria.service';
+import { ConsultaHistorialService } from './layout/services/consulta-historial/consulta-historial.service';
+import { PagoMasivoService } from './layout/services/pago-masivo/pago-masivo.service';
+
+//********** IMPORT UTIL COMPONENT SERVICES */
+import { UtilDTableAjusteMasivo } from './layout/components/util/util.dtable.ajuste-masivo';
+import { UtilDTableBorradoMasivo } from './layout/components/util/util.dtable.borrado-masivo';
+import { UtilDTableConsultaAuditoria } from './layout/components/util/util.dtable.consulta-auditoria';
+import { UtilDTableGestionMasiva } from './layout/components/util/util.dtable.gestion-masiva';
+import { UtilDTablePagoMasivo } from './layout/components/util/util.dtable.pago-masivo';
+import { UtilGestionMasiva } from './layout/components/util/util.gestion-masiva';
+import { UtilTextHtml } from './layout/components/util/util.text.html';
 
 @NgModule({
   declarations: [
@@ -72,8 +86,7 @@ import { TransaccionesFinancierasService } from './layout/services/transacciones
     ResumenProcesamientoComponent,
     NgbdDatepickerPopup,
     AutogridComponent,
-    HomeComponent,
-    TestComponentsComponent
+    HomeComponent
   ],
   imports: [
     //******* Hace posible la exportacion de los componentes */
@@ -103,8 +116,24 @@ import { TransaccionesFinancierasService } from './layout/services/transacciones
     AppRoutingModule
   ],
   providers: [
+    //********** Global Providers */
     GlobalEventsManager,
-    TransaccionesFinancierasService
+    GlobalParametersService,
+    //********** IMPORT SERVICES */
+    LoginService,
+    AjusteMasivoService,
+    BorradoMasivoService,
+    ConsultaAuditoriaService,
+    ConsultaHistorialService,
+    PagoMasivoService,
+    //********** IMPORT UTIL COMPONENT SERVICES */
+    UtilDTableAjusteMasivo,
+    UtilDTableBorradoMasivo,
+    UtilDTableConsultaAuditoria,
+    UtilDTableGestionMasiva,
+    UtilDTablePagoMasivo,
+    UtilGestionMasiva,
+    UtilTextHtml,
   ],
   bootstrap: [AppComponent]
 })

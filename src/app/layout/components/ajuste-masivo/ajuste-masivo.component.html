@@ -2,7 +2,8 @@
   <app-importacion 
       (EESetArchivoImportado)="SetArchivoImportado($event)"
       (EEUploadFileRecords)="UploadFileRecords()"
-      (EECleanFileRecords)="CleanFileRecords()" 
+      (EECleanFileRecords)="CleanFileRecords()"
+      (EELookUpHistorial)="LookUpHistorial()" 
       [strTipoProcesoMasivo]="strTipoProcesoMasivo" 
       [numProgresoCarga]="numProgresoCarga">
   </app-importacion>
@@ -10,30 +11,36 @@
 
 <div *ngIf="bIsResumenPreliminarOn" class="container">
   <app-resumen-preliminar 
-      (confirmUpload)="confirmUpload($event)"
-      (cancelUpload)="this.bIsResumenPreliminarOn = false"
-      (stopUpload)="stopUpload()"
-      [cols]="headersPreliminarFallidos"
+      (EEConfirmUpload)="ConfirmUpload($event)"
+      (EECancelUpload)="CancelUpload()"
+      (EEStopUpload)="StopUpload()"
+      [loHeadersResumenPreliminar]="loHeadersResumen"
+      [loDetalleInvalido]="loDetalleInvalidoAjusteMasivo"
+      [oCabeceraGestionMasiva]="oAjusteMasivo.obeCabecera"
       [strTipoProcesoMasivo]="strTipoProcesoMasivo"
-      [obeAjusteMasivo]="obeAjusteMasivo"
-      [existeRegistrosInvalidos]="existeRegistrosInvalidos" 
+      [bExisteRegistrosInvalidos]="bExisteRegistrosInvalidos"
+      [bIsConfirmed]="bIsConfirmed" 
       >
   </app-resumen-preliminar>
 </div>
 
 <div *ngIf="bIsResumenProcesamientoOn" class="container">
   <app-resumen-procesamiento
-      (backToStart)="backToStart()"
-      [strTipoProcesoMasivo]="strTipoProcesoMasivo"
-      [cols]="this.headersPreliminarFallidos"
-      [obeAjusteMasivo]="obeAjusteMasivo">
+      (EEBackToStart)="BackToStart()"
+      [loHeadersResumenProcesamiento]="loHeadersResumen"
+      [loDetalleInvalido]="loDetalleInvalidoAjusteMasivo"
+      [oCabeceraGestionMasiva]="oAjusteMasivo.obeCabecera"
+      [strTipoProcesoMasivo]="strTipoProcesoMasivo">
   </app-resumen-procesamiento>
 </div>
 
 <div *ngIf="bIsConsultaOn" class="container">
   <app-consulta-historial 
-      (statusChange)="this.bIsConsultaOn = !this.bIsConsultaOn"
-      [strTipoProcesoMasivo]="strTipoProcesoMasivo"
-      [headersConsulta] ="this.headersConsulta">
+      (EEBackToStart)="BackToStart()"
+      (EESearchHistorial)="SearchAdjustmentHistorial($event)"
+      (EESearchHistorialDefault)="SearchAdjustmentHistorialDefault()"
+      [loHeadersConsultaHistorial] ="loHeadersConsultaHistorial"
+      [loResultSearch]="loRegistroAuditoriaSearched"
+      [strTipoProcesoMasivo]="strTipoProcesoMasivo">
   </app-consulta-historial>
 </div>

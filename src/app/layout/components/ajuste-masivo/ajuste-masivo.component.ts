@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AjusteMasivoService } from '../../services/ajuste-masivo/ajuste-masivo.service';
 import { AjusteMasivo } from '../../models/ajuste-masivo/ajuste-masivo';
 import { DetalleAjusteMasivo } from '../../models/ajuste-masivo/detalle-ajuste-masivo';
@@ -7,6 +7,9 @@ import { HeaderTable } from '../../models/dynamic-table/header-table';
 import { UtilDTableAjusteMasivo } from '../util/util.dtable.ajuste-masivo';
 import { UtilGestionMasiva } from '../util/util.gestion-masiva';
 import { ArchivoImportado } from '../../models/importacion/archivo-importado';
+import { RegistroAuditoria } from '../../models/consulta-auditoria/registro-auditoria';
+import { FiltrosConsultaHistorial } from '../../models/consulta-historial/filtros-consulta-historial';
+
 
 @Component({
   selector: 'app-ajuste-masivo',
@@ -17,19 +20,20 @@ import { ArchivoImportado } from '../../models/importacion/archivo-importado';
 
 export class AjusteMasivoComponent implements OnInit {
   //Properties:
+  loHeadersConsultaHistorial: HeaderTable[];// Headers enviados a la tabla de consulta
+  loHeadersResumen: HeaderTable[];// Headers enviados a la tabla de resumen preliminar para registros fallidos.
+  loDetalleInvalidoAjusteMasivo: DetalleAjusteMasivo[];
+  loRegistroAuditoriaSearched: RegistroAuditoria[];
+  oArchivoImportado: ArchivoImportado;
+  oAjusteMasivo: AjusteMasivo;
   bIsConsultaOn: boolean = false;
   bIsResumenPreliminarOn: boolean = false;
   bIsResumenProcesamientoOn: boolean = false;
-  oArchivoImportado: ArchivoImportado;
-  oAjusteMasivo: AjusteMasivo;
-  loDetalleInvalidoAjusteMasivo: DetalleAjusteMasivo[];
   bExisteRegistrosInvalidos:boolean=false;
+  bFieldValid:boolean;
+  bIsConfirmed:boolean=false;
   numProgresoCarga:number=0;
-
-  // Nombre de la gestión
-  strTipoProcesoMasivo: string;
-  loHeadersConsultaHistorial: HeaderTable[];// Headers enviados a la tabla de consulta
-  loHeadersResumenPreliminar: HeaderTable[];// Headers enviados a la tabla de resumen preliminar para registros fallidos.
+  strTipoProcesoMasivo: string;// Nombre de la gestión
 
   constructor(private _AjusteMasivoService: AjusteMasivoService,
     private _UtilDTableAjusteMasivo: UtilDTableAjusteMasivo,
@@ -37,12 +41,13 @@ export class AjusteMasivoComponent implements OnInit {
 
   ngOnInit() {
     this.loHeadersConsultaHistorial = this._UtilDTableAjusteMasivo.GetHeaderConsultaHistorialAjusteMasivo();
-    this.loHeadersResumenPreliminar = this._UtilDTableAjusteMasivo.GetHeaderResumenPreliminarAjusteMasivo();
+    this.loHeadersResumen = this._UtilDTableAjusteMasivo.GetHeaderResumenPreliminarAjusteMasivo();
     this.strTipoProcesoMasivo = this._UtilGestionMasiva.GetNameProcesoAjusteMasivo();
   }
 
   SetArchivoImportado(oArchivoImportadoIn: ArchivoImportado) {
     this.oArchivoImportado = oArchivoImportadoIn;
+    console.log(this.oArchivoImportado);
   }
 
   UploadFileRecords() {
@@ -50,67 +55,44 @@ export class AjusteMasivoComponent implements OnInit {
     this.ValidateFileRecords();
   }
 
+  
   ValidateFileRecords(){
     this.setDatosInicialesAjusteMasivo();
-    let valid: boolean = true;
     let numRegistrosInvalidos=0;    
     this.numProgresoCarga=0;
     let sumaProgresoCarga = 1/this.oArchivoImportado.NroRegistrosArchivo;
     let oDetalle: DetalleAjusteMasivo;
     let oValue:any;
+    let numMontoTotal=0;
     for (let numFila = 0; numFila < this.oArchivoImportado.NroRegistrosArchivo; numFila++) {
       oDetalle = this.CreateDetalleAjusteMasivoInicial();
-      valid = true;
-      //Valido Id
+      this.bFieldValid = true;
+      //Validate Customer Id IBS
       oValue=this.oArchivoImportado.loRegistros[numFila][0];
-      if (isNaN(oValue)) {
-        oDetalle.DescripcionError+="; El Id Cliente IBS no es un número.";
-        valid = false;
-      }else{
-        oDetalle.IdClienteIBS=parseInt(oValue);
-      }
+      oDetalle=this.ValidateCustomerIdIBS(oValue,oDetalle);
 
-      //Validar fecha (todavia no se como con typescript)
+      //ValidateAdjustmentDate
       oValue=this.oArchivoImportado.loRegistros[numFila][1];
-      if (!this.IsADate(oValue)) {
-        oDetalle.DescripcionError+="; La fecha de Ajuste no coincide con el formato dd/mm/yyyy.";
-        valid = false;
-      }else{
-        oDetalle.FechaAjuste = oValue;
-      }
-
-      //Validar Batch Code
+      oDetalle=this.ValidateAdjustmentDate(oValue,oDetalle);
+     
+      //ValidateBatchCode
       oValue=this.oArchivoImportado.loRegistros[numFila][2];
-      if(!this.IsAlphanumeric(oValue)){
-        oDetalle.DescripcionError+="; El Batch Code no es alfanumérico.";
-        valid = false;
-      }else{
-        oDetalle.FinanceBatchCode = oValue;
-      }
+      oDetalle=this.ValidateBatchCode(oValue,oDetalle);
 
-      //Validar Ledger (requiero regex)
+      //ValidateLedgerAccount
       oValue=this.oArchivoImportado.loRegistros[numFila][3];
-      if(!this.IsAlphanumeric(oValue)){
-        oDetalle.DescripcionError+="; El Ledger Account Code no es alfanumérico.";
-        valid = false;
-      }else{
-        oDetalle.LedgerAccountCode = oValue;
-      }
+      oDetalle=this.ValidateLedgerAccount(oValue,oDetalle);
 
-      //Validar Monto
+      //ValidateAmountFinancialTransaction
       oValue=this.oArchivoImportado.loRegistros[numFila][4];
-      if (isNaN(oValue)) {
-        oDetalle.DescripcionError+="; El Monto de la transacción no es un número.";
-        valid = false;
-      }else{
-        oDetalle.Monto = oValue;
-      }
+      oDetalle=this.ValidateAmountFinancialTransaction(oValue,oDetalle);
 
       //Validar Descripción Interna
       oValue=this.oArchivoImportado.loRegistros[numFila][5];
       oDetalle.DescripcionInterna = oValue;
 
-      if (!valid) {
+      numMontoTotal+=(oDetalle.Monto*1);
+      if (!this.bFieldValid) {
         numRegistrosInvalidos++;
         this.loDetalleInvalidoAjusteMasivo.push(oDetalle);
       }else{
@@ -118,6 +100,7 @@ export class AjusteMasivoComponent implements OnInit {
       }
       this.numProgresoCarga+=sumaProgresoCarga;
     }
+    this.oAjusteMasivo.obeCabecera.MontoTotal = numMontoTotal;
     this.oAjusteMasivo.obeCabecera.NroRegistrosInvalidos = numRegistrosInvalidos;
     this.oAjusteMasivo.obeCabecera.NroRegistrosValidos = 
         this.oAjusteMasivo.obeCabecera.NroRegistrosArchivo - numRegistrosInvalidos;
@@ -128,6 +111,7 @@ export class AjusteMasivoComponent implements OnInit {
   }
 
   MostrarResumenPreliminar(){
+    console.log(this.oAjusteMasivo);
     this.bIsResumenPreliminarOn = true;
   }
 
@@ -150,7 +134,7 @@ export class AjusteMasivoComponent implements OnInit {
   CreateDetalleAjusteMasivoInicial(): DetalleAjusteMasivo{
     let oDetalle = new DetalleAjusteMasivo();
     oDetalle.IdClienteIBS= 0;
-    oDetalle.FechaAjuste= "";
+    oDetalle.FechaAjuste= new Date();
     oDetalle.FinanceBatchId = 0;
     oDetalle.FinanceBatchCode = '';
     oDetalle.FinancialAccountId = 0;
@@ -162,64 +146,108 @@ export class AjusteMasivoComponent implements OnInit {
     return oDetalle;
   }
 
-  confirmUpload(strMotivo){
+  ConfirmUpload(strMotivo:string){
+    this.bIsConfirmed=true;
     this.oAjusteMasivo.obeCabecera.Motivo=strMotivo;
     console.log(this.oAjusteMasivo);
     this._AjusteMasivoService.ProcesarArchivoAjusteMasivo(this.oAjusteMasivo)
           .subscribe(oAjusteMasivoResponse => {
             console.log("response");
             console.log(oAjusteMasivoResponse);
-            this.oAjusteMasivo = oAjusteMasivoResponse;
-            this.bIsResumenPreliminarOn = false;
-            this.bIsResumenProcesamientoOn=true;
+            this.EvaluateResponseProcessFile(oAjusteMasivoResponse);
           });
   }
 
-  stopUpload(){
+  StopUpload(){
     this.bIsResumenPreliminarOn = false;
     this.bIsResumenProcesamientoOn=true;
   }
 
-  backToStart(){
+  CancelUpload(){
+    this.bIsResumenPreliminarOn = false;
+  }
+
+  BackToStart(){
     this.bIsResumenProcesamientoOn = false;
+    this.bIsConsultaOn=false;
   }
 
   CleanFileRecords(){
-
+    this.oAjusteMasivo = null;
   }
 
-  IsADate(strFecha: string):boolean{
-    if(strFecha){
-      let partsDate = strFecha.split('/');
-      if(partsDate && partsDate.length==3){
-        let expRegularNum = /^([0-9])*$/;
-        if(expRegularNum.test(partsDate[0]) && expRegularNum.test(partsDate[1]) &&
-        expRegularNum.test(partsDate[2])){
-          let dteFecha = this.GetStringDate(partsDate[0],partsDate[1], partsDate[2]);
-          if(dteFecha){
-            return true;
-          }else{
-            return false;
-          }
-        }else{
-          return false;
-        }
-      }else{
-        return false;
-      }
+  LookUpHistorial(){
+    this.bIsConsultaOn=true;
+  }
+
+  SearchAdjustmentHistorial(oFiltrosConsultaHistorial: FiltrosConsultaHistorial){
+    console.log("=============SearchAdjustmentHistorial===============");
+    console.log(oFiltrosConsultaHistorial);
+  }
+
+  SearchAdjustmentHistorialDefault(){
+    console.log("=============SearchAdjustmentHistorialDefault===============");
+  }
+
+  EvaluateResponseProcessFile(oAjusteMasivoResponse:AjusteMasivo){
+    this.bIsConfirmed=false;
+    if(oAjusteMasivoResponse){
+      this.oAjusteMasivo = oAjusteMasivoResponse;
+      this.bIsResumenPreliminarOn = false;
+      this.bIsResumenProcesamientoOn=true;
+    }else{
+      //===recuperar valor catcheado en el servicio para pintarlo
     }
-    return false;
   }
-
-  GetStringDate(strDay: string, strMonth: string, strYear: string){
-    return  new Date(strMonth + "/" + strDay + "/" + strYear);
-  }
-
-  IsAlphanumeric(strValor: string):boolean{
-    let expRegularAlphanumeric = /[A-Za-z0-9_]/;
-    if(expRegularAlphanumeric.test(strValor)){
-      return true;
+  //===========VALIDATE FIELDS RECORDS FILE IMPORTED ======
+  ValidateCustomerIdIBS(oValue: any, oDetalle: DetalleAjusteMasivo):DetalleAjusteMasivo{
+    if (isNaN(oValue)) {
+      oDetalle.DescripcionError+="; El Id Cliente IBS no es un número.";
+      this.bFieldValid = false;
+    }else{
+      oDetalle.IdClienteIBS=parseInt(oValue);
     }
-    return false;
+    return oDetalle;
+  }
+
+  ValidateAdjustmentDate(oValue:any, oDetalle: DetalleAjusteMasivo):DetalleAjusteMasivo{
+    let dteFecha:Date = this._UtilGestionMasiva.GetDateFromString(oValue);
+    if (!dteFecha) {
+      oDetalle.DescripcionError+="; La fecha de Ajuste no coincide con el formato dd/mm/yyyy.";
+      this.bFieldValid = false;
+    }else{
+      oDetalle.FechaAjuste = dteFecha;
+    }
+    return oDetalle;
+  }
+
+  ValidateBatchCode(oValue:any, oDetalle: DetalleAjusteMasivo):DetalleAjusteMasivo{
+    if(oValue && !this._UtilGestionMasiva.IsAlphanumeric(oValue)){
+      oDetalle.DescripcionError+="; El Batch Code no es alfanumérico.";
+      this.bFieldValid = false;
+    }else{
+      oDetalle.FinanceBatchCode = oValue;
+    }
+    return oDetalle;
+  }
+
+  ValidateLedgerAccount(oValue:any, oDetalle: DetalleAjusteMasivo):DetalleAjusteMasivo{
+    if(!this._UtilGestionMasiva.IsAlphanumeric(oValue)){
+      oDetalle.DescripcionError+="; El Ledger Account Code no es alfanumérico.";
+      this.bFieldValid = false;
+    }else{
+      oDetalle.LedgerAccountCode = oValue;
+    }
+    return oDetalle;
+  }
+
+  ValidateAmountFinancialTransaction(oValue:any, oDetalle: DetalleAjusteMasivo):DetalleAjusteMasivo{
+    if (isNaN(oValue)) {
+      oDetalle.DescripcionError+="; El Monto de la transacción no es un número.";
+      this.bFieldValid = false;
+    }else{
+      oDetalle.Monto = oValue;
+    }
+    return oDetalle;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AjusteMasivo } from '../../../models/ajuste-masivo/ajuste-masivo';
+import { CabeceraGestionMasiva } from '../../../models/gestion-masiva/cabecera-gestion-masiva';
 import { HeaderTable } from '../../../models/dynamic-table/header-table';
 
 @Component({
@@ -8,11 +8,11 @@ import { HeaderTable } from '../../../models/dynamic-table/header-table';
   styleUrls: ['./resumen-procesamiento.component.css']
 })
 export class ResumenProcesamientoComponent implements OnInit {
-  @Input() cols: HeaderTable[];
-  @Input() registros: any[];
+  @Output() EEBackToStart = new EventEmitter();
+  @Input() loHeadersResumenProcesamiento: HeaderTable[];
+  @Input() loDetalleInvalido: any[];
+  @Input() oCabeceraGestionMasiva:CabeceraGestionMasiva;
   @Input() strTipoProcesoMasivo: string;
-  @Input() obeAjusteMasivo: AjusteMasivo;
-  @Output() backToStart = new EventEmitter();
   
   constructor() { }
 
@@ -20,8 +20,11 @@ export class ResumenProcesamientoComponent implements OnInit {
 
   }
 
-  abrirUpload(){
-    this.backToStart.emit();
+  BackToStart(){
+    this.EEBackToStart.emit();
   }
 
+  DownloadRecords(){
+    console.log("==========DownloadRecords==========");
+  }
 }

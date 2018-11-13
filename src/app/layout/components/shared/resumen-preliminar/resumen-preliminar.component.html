@@ -1,123 +1,104 @@
 <div class="container py-4">
     <div class="row">
         <div class="col-sm-2"></div>
-
         <div class="col-sm-8 bg-white">
             <div class="panel panel-default">
-               
                 <div class="panel panel-heading">
                     <div class="py-4 ml-md-4">
+                        <h5>{{strTipoProcesoMasivo}}</h5>
                         <h2>Resumen de Archivo a Procesar</h2>
                     </div>
                 </div>
-
                 <div class="panel panel-body">
                     <div class="px-4 pb-4">
                         <div class="form">
-
                             <div class="row">
                                 <label for="" class="col-3 pr-0 ">Cantidad de Registros:</label>
-                                <label for="" class="col">{{obeAjusteMasivo.obeCabecera.NroRegistrosArchivo}}</label>
+                                <label for="" class="col">
+                                    {{oCabeceraGestionMasiva.NroRegistrosArchivo}}
+                                </label>
                             </div>
                             <div class="row">
                                 <label for="" class="col-3 pr-0 ">Monto Total:</label>
-                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.MontoTotal}}</label>
+                                <label for="" class="col ">
+                                    {{oCabeceraGestionMasiva.MontoTotal}}
+                                </label>
                             </div>
                             <div class="row">
                                 <label for="" class="col-3 pr-0">Nombre del Archivo:</label>
-                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.NombreArchivo}}</label>
+                                <label for="" class="col ">
+                                    {{oCabeceraGestionMasiva.NombreArchivo}}
+                                </label>
                             </div>
                             <div class="row">
                                 <label for="" class="col-3 pr-0">Usuario:</label>
-                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.NombreUsuario}}</label>
+                                <label for="" class="col ">
+                                    {{oCabeceraGestionMasiva.NombreUsuario}}
+                                </label>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 pr-0">Fecha y Hora:</label>&nbsp;&nbsp;&nbsp;
-                                <p-calendar [(ngModel)]="dteFechaActual" [locale]="es" dateFormat="dd/mm/yy" 
+                                <label for="" class="col-3 pr-0">Fecha y Hora:</label>
+                                &nbsp;&nbsp;&nbsp;<!-- cambiar por padding -->
+                                <!-- [locale]="es" -->
+                                <p-calendar [(ngModel)]="dteFechaActual" dateFormat="dd/mm/yy" 
                                     [disabled]="true"></p-calendar>
                             </div>
                             <div class="row">
-                                <label for="" class="col-3 pr-0">Registros Fallidos:</label>
-                                <label for="" class="col ">{{obeAjusteMasivo.obeCabecera.NroRegistrosFallidos}}</label>
+                                <label for="" class="col-3 pr-0">Registros Invalidos:</label>
+                                <label for="" class="col ">
+                                    {{oCabeceraGestionMasiva.NroRegistrosInvalidos}}
+                                </label>
                             </div>
-                            <div *ngIf="!existeRegistrosInvalidos" class="row">
+                            <div *ngIf="!bExisteRegistrosInvalidos" class="row">
                                 <div class="d-flex col-3 pr-0 align-items-center">Motivo/Razón:</div>
                                 <div class="col">
-                                    <input type="text" [(ngModel)]="strMotivoImportacion" class="form-control" [disabled]="mostrarAnular"
-                                     id="motivo">
+                                    <input type="text" [(ngModel)]="strMotivoImportacion" 
+                                        class="form-control" [disabled]="mostrarAnular"
+                                     >
                                 </div>
                             </div>
-
                         </div>
 
-                        <div *ngIf="existeRegistrosInvalidos">
-                          <div class="row py-2">
-                            <div class="alert alert-warning" role="alert">
-                              Los registros fallidos deben ser subsanados y cargar un archivos
-                              nuevo. La carga no procede
+                        <div *ngIf="bExisteRegistrosInvalidos">
+                            <div class="row py-2">
+                                <div class="alert alert-warning" role="alert">
+                                    {{strInvalidMessage}}
+                                </div>
                             </div>
-                          </div>
-
-                          <app-dynamic-table [oHeaderTable]="cols" [loData]=""></app-dynamic-table>
-
-                          <!--<div class="py-2">
-      <p-table [value]="registros" [columns]="cols"
-          [paginator]="true" [rows]="10" [style]="{width: 'auto'}"
-          [responsive]="true">
-          <ng-template pTemplate="caption">
-              <div style="text-align: left">Detalle de Registros Fallidos
-
-              </div>
-          </ng-template>
-
-          <ng-template pTemplate="header" let-columns>
-              <tr>
-                <th *ngFor="let col of columns" >
-                  {{col.header}}
-                </th>
-              </tr>
-          </ng-template>
-
-          <ng-template pTemplate="body" let-rowData let-columns="columns" >
-            <tr>
-              <td *ngFor="let col of columns">
-                {{rowData[col.field]}}
-              </td>
-
-
-            </tr>
-          </ng-template>
-      </p-table>
-  </div>-->
-
-                          <div class="d-flex justify-content-end mb-3 pt-4 px-4">
-                            <!-- <div>
-            <button pButton type="button" (click)="cancelarCarga()" label="Retornar"></button>
-        </div> -->
-                            <div>
-                              <button pButton type="button" (click)="mostrarSinErrores()" label="Retornar"></button>
-                            </div>
-                          </div>
-
-                        </div>
-
-
-                        <div *ngIf="!existeRegistrosInvalidos && !mostrarAnular" class="d-flex justify-content-between mb-3 pt-4 px-4">
-                            <div>
-                                <button pButton type="button" (click)="confirmarCarga()" label="Confirmar Carga"></button>
-                            </div>
-                            <div>
-                                <button pButton type="button" (click)="cancelarCarga()" label="Cancelar Carga"></button>
+                            <app-dynamic-table 
+                                [loHeaderTable]="loHeadersResumenPreliminar" 
+                                [loData]="loDetalleInvalido">
+                            </app-dynamic-table>
+                            <div class="d-flex justify-content-end mb-3 pt-4 px-4">
+                                <div>
+                                    <button pButton type="button" (click)="CancelUpload()" 
+                                        label="Retornar"></button>
+                                </div>
                             </div>
                         </div>
 
-                        <div *ngIf="!existeRegistrosInvalidos && mostrarAnular" class="d-flex justify-content-between mb-3 pt-4 px-4">
+                        <div *ngIf="!bExisteRegistrosInvalidos && !bIsConfirmed" 
+                                class="d-flex justify-content-between mb-3 pt-4 px-4">
                             <div>
-                                <button pButton type="button" (click)="anularCarga()" label="Anular Carga"></button>
+                                <button pButton type="button" (click)="ConfirmUpload()" 
+                                    label="Confirmar Carga"></button>
+                            </div>
+                            <div>
+                                <button pButton type="button" (click)="CancelUpload()" 
+                                    label="Cancelar Carga"></button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!existeRegistrosInvalidos && bIsConfirmed" 
+                                class="d-flex justify-content-between mb-3 pt-4 px-4">
+                            <div>
+                                <button pButton type="button" (click)="StopUpload()" 
+                                    label="Anular Carga"></button>
                             </div>                            
                         </div>
 
-                        <div *ngIf="isLoading">
+                        <div *ngIf="bIsConfirmed"
+                                class="d-flex justify-content-between mb-3 pt-4 px-4">
                             <img src="./assets/images/loadingCircle.gif" />
                         </div>
 
@@ -130,56 +111,3 @@
         <div class="col-sm-2"></div>
     </div>
 </div>
-
-
-
-
-<!-- <div>
-    <h3>Resumen de Archivo a Procesar</h3>
-    <table>
-        <tr>
-            <td>Cantidad de Registros:</td>
-            <td>30872</td>
-        </tr>
-        <tr>
-            <td>Monto Total:</td>
-            <td>234514</td>
-        </tr>
-        <tr>
-            <td>Nombre del Archivo:</td>
-            <td>Archivo.xls</td>
-        </tr>
-        <tr>
-            <td>Usuario:</td>
-            <td>Juan Fernandez</td>
-        </tr>
-        <tr>
-            <td>Fecha y Hora:</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Registros Fallidos:</td>
-            <td>208</td>
-        </tr>
-        <tr>
-            <td>Motivo/Razón:</td>
-            <td><input type="text"></td>
-        </tr>
-    </table>
-
-    <p>Detalle de Registros Fallidos</p>
-    <table>
-        <tr>
-            <th>Fila</th>
-            <th>Columna</th>
-            <th>Detalle</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>detalle</td>
-        </tr>
-    </table>
-    <p><button class="btn btn-dtv" (click)="confirmarCarga()">Confirmar Carga</button></p>
-    <p><button class="btn btn-dtv" (click)="cancelarCarga()">Cancelar Carga</button></p>
-</div> -->
