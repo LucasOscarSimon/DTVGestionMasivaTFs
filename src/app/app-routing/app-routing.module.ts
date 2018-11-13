@@ -11,8 +11,6 @@ import { ConsultaAuditoriaComponent } from '../layout/components/consulta-audito
 import { ResumenProcesamientoComponent } from '../layout/components/shared/resumen-procesamiento/resumen-procesamiento.component';
 import { ResumenPreliminarComponent } from '../layout/components/shared/resumen-preliminar/resumen-preliminar.component';
 
-import { TestComponentsComponent } from '../test-components/test-components.component';
-
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
@@ -22,7 +20,6 @@ const routes: Routes = [
   { path: 'consulta-auditoria', component: ConsultaAuditoriaComponent },
   { path: 'resumen-procesamiento', component: ResumenProcesamientoComponent },
   { path: 'resumen-preliminar', component: ResumenPreliminarComponent },
-  { path: 'test', component: TestComponentsComponent },
   { path: '**', redirectTo: 'login' }
 ];
 

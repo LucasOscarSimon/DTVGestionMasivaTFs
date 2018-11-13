@@ -1,20 +1,12 @@
 import {TipoProceso} from './tipo-proceso'
 import {Estado} from '../common/estado';
-export class RegistroAuditoria {
+import { CabeceraGestionMasiva } from '../../models/gestion-masiva/cabecera-gestion-masiva';
+export class RegistroAuditoria extends CabeceraGestionMasiva {
     IdAuditoria:number;
-    Archivo:string;
-    UsuarioWindows: string;
-    NombreUsuario: string;
-    Motivo: string;
-    MontoTotal: number;
-    NroRegistrosArchivo: number;
-    NroRegistrosProcesados: number;
-    NroRegistrosValidos:number;
-    NroRegistrosFallidos:number;
     EstaActivo:boolean;
-    FechaCreacion:Date;
+    FechaCreacion:string;
     UsuarioCreador:string;
-    FechaModificacion:Date;
+    FechaModificacion:string;
     UsuarioModificador:string;
     Estado:Estado;
     TipoProceso:TipoProceso;

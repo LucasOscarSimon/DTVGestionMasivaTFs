@@ -9,7 +9,7 @@ import { HeaderTable } from '../../../models/dynamic-table/header-table';
 export class DynamicTableComponent implements OnInit {
 
   @Input() loData: any[];
-  @Input() oHeaderTable: HeaderTable[];
+  @Input() loHeaderTable: HeaderTable[];
 
   constructor() { }
 

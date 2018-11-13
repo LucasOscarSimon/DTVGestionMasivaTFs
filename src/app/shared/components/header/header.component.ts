@@ -7,10 +7,11 @@ import {GlobalEventsManager} from '../../../layout/services/global-events-manage
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public showHeader = false;
+  public showHeader: boolean = false;
 
   constructor(
-    private OGlobalEventsManager: GlobalEventsManager) {
+    private OGlobalEventsManager:GlobalEventsManager
+  ) { 
     this.OGlobalEventsManager.showHeader.subscribe((mode: any) => {
       console.log(mode);
       this.showHeader = mode;
@@ -19,4 +20,5 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
   }
+
 }

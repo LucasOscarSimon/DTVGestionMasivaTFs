@@ -1,8 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TransaccionesFinancierasService } from 'src/app/layout/services/transacciones-financieras/transacciones-financieras.service';
+import { AjusteMasivoService } from '../../services/ajuste-masivo/ajuste-masivo.service';
 import { AjusteMasivo } from '../../models/ajuste-masivo/ajuste-masivo';
 import { DetalleAjusteMasivo } from '../../models/ajuste-masivo/detalle-ajuste-masivo';
 import { CabeceraAjusteMasivo } from '../../models/ajuste-masivo/cabecera-ajuste-masivo';
+import { HeaderTable } from '../../models/dynamic-table/header-table';
+import { UtilDTableAjusteMasivo } from '../util/util.dtable.ajuste-masivo';
+import { UtilGestionMasiva } from '../util/util.gestion-masiva';
+import { ArchivoImportado } from '../../models/importacion/archivo-importado';
 
 @Component({
   selector: 'app-ajuste-masivo',
@@ -12,194 +16,210 @@ import { CabeceraAjusteMasivo } from '../../models/ajuste-masivo/cabecera-ajuste
 
 
 export class AjusteMasivoComponent implements OnInit {
-
-  constructor(private _transaccionesFinancierasService: TransaccionesFinancierasService) { }
-      consultaOn = false;
-      resumenPreliminarOn = false;
-      resumenProcesamientoOn = false;
-      csvImportado: any;
-      obeAjusteMasivo: AjusteMasivo;
-      existeRegistrosInvalidos = false;
-      progresoCarga = 0;
+  //Properties:
+  bIsConsultaOn: boolean = false;
+  bIsResumenPreliminarOn: boolean = false;
+  bIsResumenProcesamientoOn: boolean = false;
+  oArchivoImportado: ArchivoImportado;
+  oAjusteMasivo: AjusteMasivo;
+  loDetalleInvalidoAjusteMasivo: DetalleAjusteMasivo[];
+  bExisteRegistrosInvalidos:boolean=false;
+  numProgresoCarga:number=0;
 
   // Nombre de la gestión
-  transaccion: any = { id: '2', name: 'Ajustes' };
+  strTipoProcesoMasivo: string;
+  loHeadersConsultaHistorial: HeaderTable[];// Headers enviados a la tabla de consulta
+  loHeadersResumenPreliminar: HeaderTable[];// Headers enviados a la tabla de resumen preliminar para registros fallidos.
 
-  // Data dummy enviada a la tabla de detalle de errores del resumen preliminar y de procesamiento
-  registros: any = [
-    {
-      idIBSCliente: '00001', year: '29/10/2018', batch: '1', ledgerAccount: '105110R',
-      monto: '1x23,20', descInterna: 'Ajuste de prueba', descError: 'El monto no es un número.'
-    }
-  ];
-  // Data dummy enviada a la tabla de detalle de errores del resumen preliminar
-  registrosConsulta: any = [
-    {
-      id: '3', nombreArchivo: 'Archivo.csv', usuario: 'PBLANCAS', nroRegArchivo: '1234',
-      nroRegProcesados: '13523', nroRegValidos: '432', nroRegFallidos: '8462',
-      monto: '13523', fechaHora: '432', motivo: '8462', estado: 'procesado'
-    }
-  ];
-
-  // Headers enviados a la tabla de consulta
-  colsConsulta: any = [
-    { field: 'id', header: 'Id' },
-    { field: 'nombreArchivo', header: 'Nombre del Archivo' },
-    { field: 'usuario', header: 'Usuario' },
-    { field: 'nroRegArchivo', header: 'Nro. de Registros del Archivo' },
-    { field: 'nroRegProcesados', header: 'Nro. de Registros Procesados' },
-    { field: 'nroRegValidos', header: 'Nro. de Registros Válidos' },
-    { field: 'nroRegFallidos', header: 'Nro. de Registros Fallidos' },
-    { field: 'monto', header: 'Monto Total' },
-    { field: 'fechaHora', header: 'Fecha y Hora' },
-    { field: 'motivo', header: 'Motivo' },
-    { field: 'estado', header: 'Estado' },
-  ];
-
-  // Estados enviados a los drop down
-  estados: any = [
-    { name: 'Procesado' },
-    { name: 'En Proceso' },
-    { name: 'Cancelado' }
-  ];
-
-  // Headers enviados a la tabla de detalle de errores del resumen preliminar y de procesamiento
-  cols: any = [
-    { field: 'IdClienteIBS', header: 'Id IBS Cliente' },
-    { field: 'FechaAjuste', header: 'Fecha Ajuste' },
-    { field: 'FinanceBatchCode', header: 'Batch' },
-    { field: 'LedgerAccountCode', header: 'Ledger Account' },
-    { field: 'Monto', header: 'Monto' },
-    { field: 'DescripcionInterna', header: 'Descripción Interna' },
-    { field: 'DescripcionError', header: 'Descripción Error' }
-  ];
+  constructor(private _AjusteMasivoService: AjusteMasivoService,
+    private _UtilDTableAjusteMasivo: UtilDTableAjusteMasivo,
+    private _UtilGestionMasiva: UtilGestionMasiva) { }
 
   ngOnInit() {
+    this.loHeadersConsultaHistorial = this._UtilDTableAjusteMasivo.GetHeaderConsultaHistorialAjusteMasivo();
+    this.loHeadersResumenPreliminar = this._UtilDTableAjusteMasivo.GetHeaderResumenPreliminarAjusteMasivo();
+    this.strTipoProcesoMasivo = this._UtilGestionMasiva.GetNameProcesoAjusteMasivo();
   }
 
-  cargarArchivo(csv) {
-    this.csvImportado = csv;
+  SetArchivoImportado(oArchivoImportadoIn: ArchivoImportado) {
+    this.oArchivoImportado = oArchivoImportadoIn;
   }
 
-  validarFecha(date: string) {
-    const re = '/^[0-3]?[0-9]\/[01]?[0-9]\/[12][90][0-9][0-9]$/';
+  UploadFileRecords() {
+    // let errorLog: string[] = [];
+    this.ValidateFileRecords();
+  }
 
-    if (date !== '' && !date.match(re)) {
-      return false;
+  ValidateFileRecords(){
+    this.setDatosInicialesAjusteMasivo();
+    let valid: boolean = true;
+    let numRegistrosInvalidos=0;    
+    this.numProgresoCarga=0;
+    let sumaProgresoCarga = 1/this.oArchivoImportado.NroRegistrosArchivo;
+    let oDetalle: DetalleAjusteMasivo;
+    let oValue:any;
+    for (let numFila = 0; numFila < this.oArchivoImportado.NroRegistrosArchivo; numFila++) {
+      oDetalle = this.CreateDetalleAjusteMasivoInicial();
+      valid = true;
+      //Valido Id
+      oValue=this.oArchivoImportado.loRegistros[numFila][0];
+      if (isNaN(oValue)) {
+        oDetalle.DescripcionError+="; El Id Cliente IBS no es un número.";
+        valid = false;
+      }else{
+        oDetalle.IdClienteIBS=parseInt(oValue);
+      }
+
+      //Validar fecha (todavia no se como con typescript)
+      oValue=this.oArchivoImportado.loRegistros[numFila][1];
+      if (!this.IsADate(oValue)) {
+        oDetalle.DescripcionError+="; La fecha de Ajuste no coincide con el formato dd/mm/yyyy.";
+        valid = false;
+      }else{
+        oDetalle.FechaAjuste = oValue;
+      }
+
+      //Validar Batch Code
+      oValue=this.oArchivoImportado.loRegistros[numFila][2];
+      if(!this.IsAlphanumeric(oValue)){
+        oDetalle.DescripcionError+="; El Batch Code no es alfanumérico.";
+        valid = false;
+      }else{
+        oDetalle.FinanceBatchCode = oValue;
+      }
+
+      //Validar Ledger (requiero regex)
+      oValue=this.oArchivoImportado.loRegistros[numFila][3];
+      if(!this.IsAlphanumeric(oValue)){
+        oDetalle.DescripcionError+="; El Ledger Account Code no es alfanumérico.";
+        valid = false;
+      }else{
+        oDetalle.LedgerAccountCode = oValue;
+      }
+
+      //Validar Monto
+      oValue=this.oArchivoImportado.loRegistros[numFila][4];
+      if (isNaN(oValue)) {
+        oDetalle.DescripcionError+="; El Monto de la transacción no es un número.";
+        valid = false;
+      }else{
+        oDetalle.Monto = oValue;
+      }
+
+      //Validar Descripción Interna
+      oValue=this.oArchivoImportado.loRegistros[numFila][5];
+      oDetalle.DescripcionInterna = oValue;
+
+      if (!valid) {
+        numRegistrosInvalidos++;
+        this.loDetalleInvalidoAjusteMasivo.push(oDetalle);
+      }else{
+        this.oAjusteMasivo.lobeDetalle.push(oDetalle);
+      }
+      this.numProgresoCarga+=sumaProgresoCarga;
     }
-    return true;
-  }
-
-  validarCsv() {
-    const errorLog: string[] = [];
-    let valido = true;
-    this.csvImportado.invalidRegs = 0;
-    this.progresoCarga = 0;
-    const sumaProgresoCarga = 1 / this.csvImportado.lines.length;
-    for (let e = 1; e < this.csvImportado.lines.length; e++) {
-      valido = true;
-      // Valido Id
-      if (isNaN(this.csvImportado.lines[e][0])) {
-        errorLog.push('Error en fila: ' + e + ' Columna: ' + 0 + ' || ' + this.csvImportado.lines[e][0] + ' no es un numero');
-        valido = false;
-      }
-      // Validar fecha (todavia no se como con typescript)
-      if (isNaN(this.csvImportado.lines[e][1]) || this.validarFecha(this.csvImportado.lines[e][1])) {
-        errorLog.push('Error en fila: ' + e + ' Columna: ' + 1 + ' || ' + this.csvImportado.lines[e][1] + ' no es una fecha valida');
-        valido = false;
-      }
-
-      // Validar binario
-      if (this.csvImportado.lines[e][2] !== '1' && this.csvImportado.lines[e][2] !== '0') {
-        errorLog.push('Error en fila: ' + e + ' Columna: ' + 2 + ' || ' + this.csvImportado.lines[e][2] + ' no es un binario');
-        valido = false;
-      }
-
-      // Validar Ledger (requiero regex)
-
-      // Validar Monto
-      if (isNaN(this.csvImportado.lines[e][4]) && this.csvImportado.lines[e][4] < 0) {
-        errorLog.push('Error en fila: ' + e + ' Columna: ' + 4 + ' || ' + this.csvImportado.lines[e][4] + ' no es un monto valido');
-        valido = false;
-      }
-      if (valido) {
-        this.csvImportado.validRegs++;
-      } else {
-        this.csvImportado.invalidRegs++;
-        this.existeRegistrosInvalidos = true;
-      }
-      this.progresoCarga += sumaProgresoCarga;
+    this.oAjusteMasivo.obeCabecera.NroRegistrosInvalidos = numRegistrosInvalidos;
+    this.oAjusteMasivo.obeCabecera.NroRegistrosValidos = 
+        this.oAjusteMasivo.obeCabecera.NroRegistrosArchivo - numRegistrosInvalidos;
+    if(numRegistrosInvalidos){
+      this.bExisteRegistrosInvalidos=true;
     }
-    this.csvImportado.ErrorLog = errorLog;
-    if (valido) {
-      this.convertirCsv(this.csvImportado);
-    }
-    console.log(errorLog);
+    this.MostrarResumenPreliminar();
   }
 
-  subirAjustes() {
-    this._transaccionesFinancierasService.subirAjustesCsv(this.obeAjusteMasivo);
+  MostrarResumenPreliminar(){
+    this.bIsResumenPreliminarOn = true;
   }
 
-  convertirCsv(objetoPadre) {
-    this.setDatosInicialesAjusteMasivo(objetoPadre);
-    for (let e = 1; e < objetoPadre.lines.length; e++) {
-      this.obeAjusteMasivo.obeCabecera.MontoTotal += parseFloat(objetoPadre.lines[e][4]);
-      this.obeAjusteMasivo.lobeDetalle.
-        push(this.createDetalleAjusteMasivo(objetoPadre.lines[e]));
-    }
-    this.resumenPreliminarOn = true;
+  setDatosInicialesAjusteMasivo(){
+    this.oAjusteMasivo = new AjusteMasivo();
+    this.oAjusteMasivo.obeCabecera = new CabeceraAjusteMasivo();
+    this.oAjusteMasivo.obeCabecera.NombreArchivo=this.oArchivoImportado.NombreArchivo;
+    this.oAjusteMasivo.obeCabecera.UsuarioWindows="admin";//=====cambiar por el usuario windows logueado
+    this.oAjusteMasivo.obeCabecera.NombreUsuario="Usuario Admin";//=====cambiar por el nombre del usuario logueado
+    this.oAjusteMasivo.obeCabecera.Motivo="";
+    this.oAjusteMasivo.obeCabecera.MontoTotal=0;
+    this.oAjusteMasivo.obeCabecera.NroRegistrosArchivo=this.oArchivoImportado.NroRegistrosArchivo;
+    this.oAjusteMasivo.obeCabecera.NroRegistrosValidos=0;
+    this.oAjusteMasivo.obeCabecera.NroRegistrosInvalidos=0;
+    this.oAjusteMasivo.lobeDetalle=[];
+    this.loDetalleInvalidoAjusteMasivo =[];
+    this.bExisteRegistrosInvalidos=false;
   }
 
-  setDatosInicialesAjusteMasivo(objetoPadre) {
-    this.obeAjusteMasivo = new AjusteMasivo();
-    this.obeAjusteMasivo.obeCabecera = new CabeceraAjusteMasivo();
-    this.obeAjusteMasivo.obeCabecera.NombreArchivo = objetoPadre.fileName;
-    this.obeAjusteMasivo.obeCabecera.UsuarioWindows = 'admin';
-    this.obeAjusteMasivo.obeCabecera.NombreUsuario = 'Usuario Admin';
-    this.obeAjusteMasivo.obeCabecera.Motivo = '';
-    this.obeAjusteMasivo.obeCabecera.MontoTotal = 0;
-    this.obeAjusteMasivo.obeCabecera.NroRegistrosArchivo = objetoPadre.lines.length - 1;
-    this.obeAjusteMasivo.obeCabecera.NroRegistrosProcesados = 0;
-    this.obeAjusteMasivo.obeCabecera.NroRegistrosValidos = objetoPadre.validRegs;
-    this.obeAjusteMasivo.obeCabecera.NroRegistrosFallidos = objetoPadre.invalidRegs;
-    this.obeAjusteMasivo.lobeDetalle = [];
-  }
-
-  createDetalleAjusteMasivo(objDetalle): DetalleAjusteMasivo {
-    const oDetalle = new DetalleAjusteMasivo();
-    oDetalle.IdClienteIBS = objDetalle[0];
-    oDetalle.FechaAjuste = new Date(); // objDetalle[1];
+  CreateDetalleAjusteMasivoInicial(): DetalleAjusteMasivo{
+    let oDetalle = new DetalleAjusteMasivo();
+    oDetalle.IdClienteIBS= 0;
+    oDetalle.FechaAjuste= "";
     oDetalle.FinanceBatchId = 0;
-    oDetalle.FinanceBatchCode = objDetalle[2];
+    oDetalle.FinanceBatchCode = '';
     oDetalle.FinancialAccountId = 0;
     oDetalle.LedgerAccountId = 0;
-    oDetalle.LedgerAccountCode = objDetalle[3];
-    oDetalle.Monto = objDetalle[4];
-    oDetalle.DescripcionInterna = objDetalle[5];
-    oDetalle.DescripcionError = '';
+    oDetalle.LedgerAccountCode = '';
+    oDetalle.Monto = 0;
+    oDetalle.DescripcionInterna = '';
+    oDetalle.DescripcionError = "";
     return oDetalle;
   }
 
-  confirmUpload(strMotivo) {
-    this.obeAjusteMasivo.obeCabecera.Motivo = strMotivo;
-    console.log(this.obeAjusteMasivo);
-    this._transaccionesFinancierasService.subirAjustesCsv(this.obeAjusteMasivo)
-          .subscribe(obeAjusteMasivoResponse => {
-            console.log('response');
-            console.log(obeAjusteMasivoResponse);
-            this.obeAjusteMasivo = obeAjusteMasivoResponse;
-            this.resumenPreliminarOn = false;
-            this.resumenProcesamientoOn = true;
+  confirmUpload(strMotivo){
+    this.oAjusteMasivo.obeCabecera.Motivo=strMotivo;
+    console.log(this.oAjusteMasivo);
+    this._AjusteMasivoService.ProcesarArchivoAjusteMasivo(this.oAjusteMasivo)
+          .subscribe(oAjusteMasivoResponse => {
+            console.log("response");
+            console.log(oAjusteMasivoResponse);
+            this.oAjusteMasivo = oAjusteMasivoResponse;
+            this.bIsResumenPreliminarOn = false;
+            this.bIsResumenProcesamientoOn=true;
           });
   }
 
-  stopUpload() {
-    this.resumenPreliminarOn = false;
-    this.resumenProcesamientoOn = true;
+  stopUpload(){
+    this.bIsResumenPreliminarOn = false;
+    this.bIsResumenProcesamientoOn=true;
   }
 
-  backToStart() {
-    this.resumenProcesamientoOn = false;
+  backToStart(){
+    this.bIsResumenProcesamientoOn = false;
+  }
+
+  CleanFileRecords(){
+
+  }
+
+  IsADate(strFecha: string):boolean{
+    if(strFecha){
+      let partsDate = strFecha.split('/');
+      if(partsDate && partsDate.length==3){
+        let expRegularNum = /^([0-9])*$/;
+        if(expRegularNum.test(partsDate[0]) && expRegularNum.test(partsDate[1]) &&
+        expRegularNum.test(partsDate[2])){
+          let dteFecha = this.GetStringDate(partsDate[0],partsDate[1], partsDate[2]);
+          if(dteFecha){
+            return true;
+          }else{
+            return false;
+          }
+        }else{
+          return false;
+        }
+      }else{
+        return false;
+      }
+    }
+    return false;
+  }
+
+  GetStringDate(strDay: string, strMonth: string, strYear: string){
+    return  new Date(strMonth + "/" + strDay + "/" + strYear);
+  }
+
+  IsAlphanumeric(strValor: string):boolean{
+    let expRegularAlphanumeric = /[A-Za-z0-9_]/;
+    if(expRegularAlphanumeric.test(strValor)){
+      return true;
+    }
+    return false;
   }
 }

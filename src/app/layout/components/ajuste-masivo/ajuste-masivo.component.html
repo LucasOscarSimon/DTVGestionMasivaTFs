@@ -1,48 +1,39 @@
-<div [hidden]="consultaOn || resumenPreliminarOn || resumenProcesamientoOn" class="container">
-  <div class="">
-    <div class=""></div>
-    <div class="">
-        <!--{{this.transaccion}} Masivos-->
-        <app-importacion (archivoCargado)="cargarArchivo($event)" 
-            [transaccion]="transaccion" (upload)="validarCsv()"
-            [progresoCarga]="progresoCarga" 
-            (statusChange)="consultaOn = !consultaOn"></app-importacion>
-    </div>
-    <div class=""></div>
-</div>
+<div *ngIf="!bIsConsultaOn && !bIsResumenPreliminarOn && !bIsResumenProcesamientoOn" class="container">
+  <app-importacion 
+      (EESetArchivoImportado)="SetArchivoImportado($event)"
+      (EEUploadFileRecords)="UploadFileRecords()"
+      (EECleanFileRecords)="CleanFileRecords()" 
+      [strTipoProcesoMasivo]="strTipoProcesoMasivo" 
+      [numProgresoCarga]="numProgresoCarga">
+  </app-importacion>
 </div>
 
-<div *ngIf="resumenPreliminarOn" class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <!--<app-resumen-preliminar  [cols]="this.cols" [registros]="this.registros" (confirmUpload)="this.resumenProcesamientoOn = true" (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>-->
-      <app-resumen-preliminar (confirmUpload)="confirmUpload($event)" 
-          (stopUpload)="stopUpload()"
-          [obeAjusteMasivo]="obeAjusteMasivo"
-          [existeRegistrosInvalidos]="existeRegistrosInvalidos" 
-          (cancelUpload)="this.resumenPreliminarOn = false"></app-resumen-preliminar>
-    </div>
-  </div>
+<div *ngIf="bIsResumenPreliminarOn" class="container">
+  <app-resumen-preliminar 
+      (confirmUpload)="confirmUpload($event)"
+      (cancelUpload)="this.bIsResumenPreliminarOn = false"
+      (stopUpload)="stopUpload()"
+      [cols]="headersPreliminarFallidos"
+      [strTipoProcesoMasivo]="strTipoProcesoMasivo"
+      [obeAjusteMasivo]="obeAjusteMasivo"
+      [existeRegistrosInvalidos]="existeRegistrosInvalidos" 
+      >
+  </app-resumen-preliminar>
 </div>
 
-<div *ngIf="resumenProcesamientoOn" class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <!--[cols]="this.cols" [registros]="this.registros"-->
-      <app-resumen-procesamiento [transaccion]="this.transaccion" [obeAjusteMasivo]="obeAjusteMasivo"
-          (backToStart)="backToStart()"></app-resumen-procesamiento>
-    </div>
-  </div>
+<div *ngIf="bIsResumenProcesamientoOn" class="container">
+  <app-resumen-procesamiento
+      (backToStart)="backToStart()"
+      [strTipoProcesoMasivo]="strTipoProcesoMasivo"
+      [cols]="this.headersPreliminarFallidos"
+      [obeAjusteMasivo]="obeAjusteMasivo">
+  </app-resumen-procesamiento>
 </div>
 
-<div *ngIf="consultaOn" class="container">
-  <div class="row">      
-    <div class="col-md-12">
-      <!--[colsConsulta]="this.colsConsulta"
-  [registrosConsulta]="this.registrosConsulta"
-  [estados]="this.estados"-->
-      <app-consulta [transaccion]="this.transaccion"
-                    (statusChange)="this.consultaOn = !this.consultaOn"></app-consulta>
-    </div>
-  </div>
+<div *ngIf="bIsConsultaOn" class="container">
+  <app-consulta-historial 
+      (statusChange)="this.bIsConsultaOn = !this.bIsConsultaOn"
+      [strTipoProcesoMasivo]="strTipoProcesoMasivo"
+      [headersConsulta] ="this.headersConsulta">
+  </app-consulta-historial>
 </div>

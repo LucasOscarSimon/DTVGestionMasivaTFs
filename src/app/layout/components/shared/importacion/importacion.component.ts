@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { UtilTextHtml } from '../../util/util.text.html';
+import { ArchivoImportado } from '../../../models/importacion/archivo-importado';
 
 @Component({
   selector: 'app-importacion',
@@ -7,117 +9,181 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 
 export class ImportacionComponent implements OnInit {
-  constructor() {
-  }
-  @Output() archivoCargado = new EventEmitter();
-  @Output() upload = new EventEmitter();
-  @Input() transaccion: any[];
-  @Input() progresoCarga: number;
+  @Output() EESetArchivoImportado = new EventEmitter();
+  @Output() EEUploadFileRecords = new EventEmitter();
+  @Input() strTipoProcesoMasivo : string;
+  @Input() numProgresoCarga : number;
   // Para Navegacion a consulta
   @Output() statusChange = new EventEmitter();
-  fileNameUpload = 'Seleccione su archivo CSV';
+  strFileNameUpload: string;
 
   uploadedFiles: any[] = [];
-  fileReaded: any;
+  oFileReaded: any;
+  oArchivoImportado:ArchivoImportado;
 
-  onBeforeUpload(event) {
-    console.log('++++++++++++++ onBeforeUpload ++++++++++++');
-    console.log(event);
+  constructor(private _UtilTextHtml: UtilTextHtml) {
   }
 
-  onBeforeSend(event) {
-    console.log('++++++++++++++ onBeforeSend ++++++++++++');
-    console.log(event);
+  ngOnInit() { 
+    this.strFileNameUpload = this._UtilTextHtml.GetTextFileNameUpload();
   }
+  // onBeforeUpload(event) {
+  //   console.log("++++++++++++++ onBeforeUpload ++++++++++++");
+  //   console.log(event);
+  // }
+
+  // onBeforeSend(event) {
+  //   console.log("++++++++++++++ onBeforeSend ++++++++++++");
+  //   console.log(event);
+  // }
 
   onUpload(event) {
-    console.log('++++++++++++++ onUpload ++++++++++++');
+    console.log("++++++++++++++ onUpload ++++++++++++");
     console.log(event);
 
-    for (const file of event.files) {
+    for (let file of event.files) {
       this.uploadedFiles.push(file);
     }
   }
 
-  onError(event) {
-    console.log('++++++++++++++ onError ++++++++++++');
-    console.log(event);
+  // onError(event) {
+  //   console.log("++++++++++++++ onError ++++++++++++");
+  //   console.log(event);
+  // }
+
+  // onClear(event) {
+  //   console.log("++++++++++++++ onClear ++++++++++++");
+  //   console.log(event);
+  // }
+
+  // onSelect(event) {
+  //   console.log("++++++++++++++ onSelect ++++++++++++");
+  //   console.log(event);
+  // }
+
+  // onProgress(event) {
+  //   console.log("++++++++++++++ onProgress ++++++++++++");
+  //   console.log(event);
+  // }
+
+  // uploadHandler(event) {
+  //   console.log("++++++++++++++ uploadHandler ++++++++++++");
+  //   console.log(event);
+  //   //event.files = [];
+  // }
+
+  
+  ImportFileCSV(oFileInput: any) {
+    //read file from input
+    // this.fileReaded = fileInput.target.files[0];
+    // var fullpath = "" + fileInput.target.value;
+    // var filename = fullpath.substring(fullpath.lastIndexOf("\\") + 1);
+    // console.log(filename);
+    // this.strFileNameUpload = filename;
+    this.GetInfoFileImport(oFileInput);
+    if(this.oFileReaded){
+      this.ConvertCSVToArray();
+      if(this.oArchivoImportado){
+        this.EmitEvent_SetArchivoImportado();
+      }
+    }
+    // let reader: FileReader = new FileReader();
+    // reader.readAsText(this.fileReaded);
+
+    // reader.onload = (e) => {
+    //   let csv: any = reader.result;
+    //   let allTextLines = csv.split(/\r|\n|\r/);
+    //   let headers = allTextLines[0].split(';');
+    //   let obeArchivoLeido = {
+    //     lines: [],
+    //     fileName: filename,
+    //     validRegs : 0,
+    //     ErrorLog : []
+    //   }
+
+    //   for (let i = 0; i < allTextLines.length; i++) {
+    //     if (allTextLines[i]) {
+    //       // split content based on comma
+    //       let data = allTextLines[i].split(';');
+    //       if (data.length === headers.length) {
+    //         let tarr = [];
+    //         for (let j = 0; j < headers.length; j++) {
+    //           tarr.push(data[j]);
+    //         }
+
+    //         // log each row to see output 
+    //         obeArchivoLeido.lines.push(tarr);
+    //       }
+    //     }
+    //     // all rows in the csv file 
+
+    //   }
+
+    //   this.archivoCargado.emit(obeArchivoLeido);
+    // }
+
+  }
+  
+  GetInfoFileImport(oFileImport: any){
+     //read file from input
+     this.oFileReaded = oFileImport.target.files[0];
+     var strFullpath = "" + oFileImport.target.value;
+     var strFilename = strFullpath.substring(strFullpath.lastIndexOf("\\") + 1);
+     console.log(strFilename);
+     this.strFileNameUpload = strFilename;
+     this.InicializarArchivoImportado();
   }
 
-  onClear(event) {
-    console.log('++++++++++++++ onClear ++++++++++++');
-    console.log(event);
+  InicializarArchivoImportado(){
+    this.oArchivoImportado= new ArchivoImportado();
+    this.oArchivoImportado.NombreArchivo = this.strFileNameUpload;
+    this.oArchivoImportado.loRegistros =[];
+    this.oArchivoImportado.NroRegistrosArchivo = 0;
   }
-
-  onSelect(event) {
-    console.log('++++++++++++++ onSelect ++++++++++++');
-    console.log(event);
-  }
-
-  onProgress(event) {
-    console.log('++++++++++++++ onProgress ++++++++++++');
-    console.log(event);
-  }
-
-  uploadHandler(event) {
-    console.log('++++++++++++++ uploadHandler ++++++++++++');
-    console.log(event);
-    // event.files = [];
-  }
-  csv2Array(fileInput: any) {
-    // read file from input
-    this.fileReaded = fileInput.target.files[0];
-    const fullpath = '' + fileInput.target.value;
-    const filename = fullpath.substring(fullpath.lastIndexOf('\\') + 1);
-    console.log(filename);
-    this.fileNameUpload = filename;
-
-    const reader: FileReader = new FileReader();
-    reader.readAsText(this.fileReaded);
+  
+  ConvertCSVToArray(){
+    let reader: FileReader = new FileReader();
+    reader.readAsText(this.oFileReaded);
 
     reader.onload = (e) => {
-      const csv: any = reader.result;
-      const allTextLines = csv.split(/\r|\n|\r/);
-      const headers = allTextLines[0].split(';');
-      const obeArchivoLeido = {
-        lines: [],
-        fileName: filename,
-        validRegs : 0,
-        ErrorLog : []
-      };
+      let csv: any = reader.result;
+      let allTextLines = csv.split(/\r|\n|\r/);
+      let headers = allTextLines[0].split(';');
 
-      this.makeConversion(allTextLines, headers, obeArchivoLeido);
-
-      this.archivoCargado.emit(obeArchivoLeido);
-    };
-  }
-
-  private makeConversion(allTextLines: any, headers: any, obeArchivoLeido: { lines: any[]; fileName: string; validRegs: number; ErrorLog: any[]; }) {
-    for (let i = 0; i < allTextLines.length; i++) {
-      if (allTextLines[i]) {
-        // split content based on comma
-        const data = allTextLines[i].split(';');
-        if (data.length === headers.length) {
-          const tarr = [];
-          for (let j = 0; j < headers.length; j++) {
-            tarr.push(data[j]);
+      if(allTextLines && allTextLines.length>1){
+        for (let i = 1; i < allTextLines.length; i++) {
+          if (allTextLines[i]) {
+            // split content based on comma
+            let data = allTextLines[i].split(';');
+            if (data.length === headers.length) {
+              let tarr = [];
+              for (let j = 0; j < headers.length; j++) {
+                tarr.push(data[j]);
+              }
+              // push each row
+              this.oArchivoImportado.loRegistros.push(tarr);
+            }
           }
-          // log each row to see output
-          obeArchivoLeido.lines.push(tarr);
         }
       }
-      // all rows in the csv file
+      
     }
+    this.oArchivoImportado.NroRegistrosArchivo = this.oArchivoImportado.loRegistros.length;
   }
 
-  ngOnInit() { }
+  EmitEvent_SetArchivoImportado(){
+    this.EESetArchivoImportado.emit(this.oArchivoImportado);
+  }
 
-  abrirConsulta() {
+  LookUpHistorial() {
     this.statusChange.emit();
   }
 
-  cargarArchivo() {
-    this.upload.emit();
+  UploadFileRecords() {
+    this.EEUploadFileRecords.emit();
   }
 
+  CleanFileRecords(){
+
+  }
 }

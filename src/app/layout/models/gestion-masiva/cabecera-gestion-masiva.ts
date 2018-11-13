@@ -5,7 +5,9 @@ export class CabeceraGestionMasiva {
     Motivo: string;
     MontoTotal: number;
     NroRegistrosArchivo: number;
-    NroRegistrosProcesados: number;
     NroRegistrosValidos: number;
+    NroRegistrosInvalidos: number;
+    NroRegistrosProcesados: number;
+    NroRegistrosAnulados: number;
     NroRegistrosFallidos: number;
 }
